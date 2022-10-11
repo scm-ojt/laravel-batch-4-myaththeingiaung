@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Exports\ProductsExport;
+use App\Http\Requests\ProductImportRequest;
+use App\Http\Requests\ProductRequest;
+use App\Imports\ProductsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -16,6 +21,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+
         return view('product.index',compact('products'));
     }
 
@@ -27,6 +33,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+        
         return view('product.create',compact('categories'));
     }
 
@@ -36,14 +43,8 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'price' => 'required|regex:/^\d*\.\d{1}[0-9]?$/',
-            'category-names' => 'required',
-            'description' => 'required',
-        ]);
         $product = new Product();
         $product->user_id = auth()->user()->id;
         $product->title = $request['title'];
@@ -55,6 +56,7 @@ class ProductController extends Controller
             $category = Category::find($cid);
             $product->categories()->attach($category);
         }
+
         return redirect()->route('product.index');
     }
 
@@ -77,7 +79,7 @@ class ProductController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::find($id);
         $categories = Category::all();
         
         return view('product.edit',compact('product','categories'));
@@ -90,26 +92,21 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'price' => 'required|regex:/^\d*\.\d{1}[0-9]?$/',
-            'category-names' => 'required',
-            'description' => 'required',
-        ]);
-        
-        $product = new Product();
+        $product = Product::find($id);
         $product->user_id = auth()->user()->id;
         $product->title = $request['title'];
         $product->price = $request['price'];
         $product->description = $request['description'];
         $product->update();
 
+        $product->categories()->detach();
         foreach($request['category-names'] as $cid){
             $category = Category::find($cid);
             $product->categories()->attach($category);
         }
+        
         return redirect()->route('product.index');
     }
 
@@ -123,8 +120,26 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         if($product){
+            $product->categories()->detach();
             $product->delete();
         }
+
         return redirect()->back();
+    }
+
+    /**
+     * Excel export for Product
+     */
+    public function export() 
+    {
+        $time = 1;
+        return Excel::download(new ProductsExport() , 'product'.$time.'.xlsx');
+    }
+
+    public function import(ProductImportRequest $request) 
+    {
+        Excel::import(new ProductsImport, $request['file']);
+        
+        return redirect('/')->with('success', 'All good!');
     }
 }

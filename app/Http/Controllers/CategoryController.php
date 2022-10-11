@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -15,6 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return view('category.index',compact('categories'));
     }
 
@@ -34,11 +35,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
         $category = new Category();
 
         $category->name = $request['name'];
@@ -47,17 +45,7 @@ class CategoryController extends Controller
         return redirect()->route('category.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      *
@@ -66,7 +54,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::where('id',$id)->first();
+        $category = Category::find($id);
+
         return view('category.edit',compact('category'));
     }
 
@@ -77,12 +66,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
-        $category = Category::where('id',$id)->first();
+        $category = Category::find($id);
 
         $category->name = $request['name'];
         $category->update();
@@ -102,6 +88,7 @@ class CategoryController extends Controller
         if($category){
             $category->delete();
         }
+        
         return redirect()->back();
     }
 }

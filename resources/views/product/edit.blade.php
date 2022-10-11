@@ -11,7 +11,7 @@
                   </div>
 
                 <div class="card-body">
-                    <form action="{{ route('product.edit',$product->id) }}" method="post">
+                    <form action="{{ route('product.update',$product->id) }}" method="post">
                         @csrf
                         @method('put')
                         <div class="mb-3">
@@ -35,8 +35,11 @@
                         <div class="mb-3">
                             <label for="category-name" class="form-label">Category Name</label>
                             <select class="form-select" id="pre-selected-options" name="category-names[]" aria-label="Choose Category Name" multiple>
+                                @foreach ($product->categories as $category)
+                                    {{ $cId[] = $category->pivot->category_id; }}
+                                @endforeach
                                 @foreach ($categories as $cname)
-                                    <option value="{{ $cname['id'] }}" {{in_array($cname['id'], old("category-names") ?: []) ? "selected" : ""}}>{{ $cname['name'] }}</option>
+                                    <option value="{{ $cname['id'] }}" @if(in_array($cname->id, $cId) ) selected @endif>{{ $cname['name'] }}</option>
                                 @endforeach
                             </select>
                             @error('category-names')
@@ -71,6 +74,9 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('#pre-selected-options').select2();
+        $('#pre-selected-options').select2({
+            placeholder: "Select Category Name",
+            allowClear:true,
+        });
     });
 </script>

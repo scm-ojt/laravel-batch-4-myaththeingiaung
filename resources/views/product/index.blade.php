@@ -8,7 +8,19 @@
                   <div>Product List</div>
                   <a href="{{ route('product.create') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
-
+                <form action="{{ route('import') }}" class="mt-4 d-flex align-items-start justify-content-start" style="margin-left: 15px" method="post" enctype="multipart/form-data">
+                  @csrf
+                  <div class="mb-3 d-inline-block">
+                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file">
+                    @error('file')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                  </div>
+                  <button class="btn btn-primary">Import</button>
+                  <a href="{{ route('export') }}" class="btn btn-success">Export</a>
+                </form>
                 <div class="card-body">
                     <table class="table" id="product-table">
                         <thead>
@@ -29,8 +41,9 @@
                             <td>{{ $product->user->name }}</td>
                             <td>{{ $product['title'] }}</td>
                             <td>
+                              
                                 @foreach ($product->categories as $category)
-                                    {{ $category->name }}
+                                  <span class="badge bg-success">{{ $category->name }}</span>
                                 @endforeach
                             </td>
                             <td>{{ $product['price'] }}</td>

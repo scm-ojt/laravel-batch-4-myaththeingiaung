@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::view('/','index');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('category',CategoryController::class);
 
 Route::resource('product',ProductController::class);
+Route::get('products/export/', [ProductController::class, 'export'])->name('export');
+Route::post('/product/import', [ProductController::class, 'import'])->name('import');
 
 Route::resource('profile',UserController::class);

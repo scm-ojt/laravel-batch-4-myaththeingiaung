@@ -44,28 +44,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('product*') ? 'active' : '' }}">Product</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('category.index') }}" class="nav-link {{ Request::is('category*') ? 'active' : '' }}">Category</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">Profile</a>
-                        </li>
-                        
                         <!-- Authentication Links -->
-                        @guest
+                        @guest  
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                            </li>                         
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -78,11 +64,26 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('product*') ? 'active' : '' }}">Product</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('category.index') }}" class="nav-link {{ Request::is('category*') ? 'active' : '' }}">Category</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">Profile</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                                    <a href="#" class="dropdown-item">profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -93,6 +94,7 @@
                                         @csrf
                                     </form>
                                 </div>    
+
                             </li>
                         @endguest
                     </ul>
