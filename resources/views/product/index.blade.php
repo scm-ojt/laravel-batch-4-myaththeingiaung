@@ -8,42 +8,56 @@
                   <div>Product List</div>
                   <a href="{{ route('product.create') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
-                <form action="{{ route('import') }}" class="mt-4 d-flex align-items-start justify-content-start" style="margin-left: 15px" method="post" enctype="multipart/form-data">
-                  @csrf
-                  <div class="mb-3 d-inline-block">
-                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file">
-                    @error('file')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                  </div>
-                  <button class="btn btn-primary">Import</button>
-                  <a href="{{ route('export') }}" class="btn btn-success">Export</a>
-                </form>
+                
                 <div class="card-body">
-                    <table class="table" id="product-table">
-                        <thead>
-                          <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Updated At</th>
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @foreach($products as $product)
-                          <tr style="vertical-align: middle;">
-                            <td>{{ $product['id'] }}</td>
+                    <div class="d-flex justify-content-between">
+                        <form action="{{ route('product.import') }}" class="mt-2 d-flex align-items-start justify-content-start" style="margin-left: 15px" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3 d-inline-block">
+                              <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file">
+                              @error('file')
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
+                              @enderror
+                            </div>
+                            <button class="btn btn-primary" style="margin: 0 5px;">Import</button>
+                            <a href="{{ route('product.export') }}" class="btn btn-success">Export</a>
+                        </form>
+                        <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
+                            <div class="mb-3 d-inline-block">
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autocomplete="title">
+                            </div>
+                            <button class="btn btn-primary" style="margin-left: 5px">Search</button>
+                        </form>
+                    </div>
+                  <table class="table" id="product-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">User Name</th>
+                          <th scope="col">Title</th>
+                          <th scope="col">Category Name</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">Updated At</th>
+                          <th scope="col" style="width:200px;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if($products->count() <= 0)
+                            <tr>
+                                <td class="text-center" colspan="7">There is no record</td>
+                            </tr>
+                        @else
+                            @foreach($products as $product)
+                            <tr style="vertical-align: middle;">
+                            <td>{{ ++$i }}</td>
                             <td>{{ $product->user->name }}</td>
                             <td>{{ $product['title'] }}</td>
                             <td>
-                              
+                                
                                 @foreach ($product->categories as $category)
-                                  <span class="badge bg-success">{{ $category->name }}</span>
+                                    <span class="badge bg-success">{{ $category->name }}</span>
                                 @endforeach
                             </td>
                             <td>{{ $product['price'] }}</td>
@@ -62,25 +76,15 @@
                                     </div>
                                 @endif
                             </td>
-                          </tr>
-                          @endforeach
-                        </tbody>
-                      </table>
+                            </tr>
+                            @endforeach
+                        @endif
+                      </tbody>
+                    </table>
+                    {{ $products->appends(request()->input())->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-<!-- Datatable -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-<script>
-$(document).ready( function () {
-  $('#product-table').DataTable();
-} );
-</script>

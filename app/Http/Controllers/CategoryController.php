@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
@@ -12,11 +13,16 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        if($request['name']!= null){
+            $categories = Category::where('name','LIKE','%'.$request->name.'%')->paginate(5);               
+        }else{
+            $categories = Category::orderBy('id','desc')->paginate(5);
+        }
+        $i = ($request->input('page', 1) - 1) * 5;
 
-        return view('category.index',compact('categories'));
+        return view('category.index',compact('categories','i'));
     }
 
     /**

@@ -18,11 +18,16 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        if($request['title']!= null){
+            $products = Product::where('title','LIKE','%'.$request->title.'%')->paginate(5);               
+        }else{
+            $products = Product::orderBy('id','desc')->paginate(5);
+        }
+        $i = ($request->input('page', 1) - 1) * 5;
 
-        return view('product.index',compact('products'));
+        return view('product.index',compact('products','i'));
     }
 
     /**
@@ -130,10 +135,10 @@ class ProductController extends Controller
     /**
      * Excel export for Product
      */
-    public function export() 
+    public function export(Product $product) 
     {
         $time = 1;
-        return Excel::download(new ProductsExport() , 'product'.$time.'.xlsx');
+        return Excel::download(new ProductsExport($product) , 'product'.$time.'.xlsx');
     }
 
     public function import(ProductImportRequest $request) 

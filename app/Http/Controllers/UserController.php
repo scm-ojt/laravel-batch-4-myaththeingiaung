@@ -13,10 +13,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('profile.index',compact('users'));
+        if($request['name']!= null){
+            $users = User::where('name','LIKE','%'.$request->name.'%')->paginate(5);               
+        }else{
+            $users = User::orderBy('id','desc')->paginate(5);
+        }
+        $i = ($request->input('page', 1) - 1) * 5;
+        
+        return view('profile.index',compact('users','i'));
     }
 
     /**
@@ -48,7 +54,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return view('profile.show',compact('user'));
     }
 
     /**

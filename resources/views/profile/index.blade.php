@@ -13,64 +13,64 @@
                     @endguest
                   
                 </div>
-
                 <div class="card-body">
+                  <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
+                    <div class="mb-3 d-inline-block">
+                      <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
+                    </div>
+                    <button class="btn btn-primary" style="margin-left: 5px">Search</button>
+                  </form>
                     <table class="table" id="category-table">
                         <thead>
                           <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">No</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Address</th>
                             <th scope="col">Updated_at</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" style="width: 200px;">Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          @foreach($users as $user)
-                          <tr style="vertical-align: middle;">
-                            <td>{{ $user['id'] }}</td>
-                            <td>{{ $user['name'] }}</td>
-                            <td>{{ $user['email'] }}</td>
-                            <td>{{ $user['phone'] }}</td>
-                            <td>{{ $user['address'] }}</td>
-                            <td>{{ $user['updated_at'] }}</td>
-                            @if(auth()->user()->id == $user['id'])
-                            <td>
-                                <div class="d-flex">
-                                    <form class="" style="margin-right: 10px;" action="{{ route('profile.destroy',$user->id) }}"  method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
-                                    </form>
-                                    <div class="col2">
-                                      <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
-                                    </div>
-                                </div>
-                            </td>
-                            @else
-                            <td></td>
-                            @endif
-                          </tr>
-                          @endforeach
+                          @if($users->count() <= 0)
+                            <tr>
+                                <td class="text-center" colspan="7">There is no record</td>
+                            </tr>
+                          @else
+                            @foreach($users as $user)
+                            <tr style="vertical-align: middle;">
+                              <td>{{ ++$i }}</td>
+                              <td>{{ $user['name'] }}</td>
+                              <td>{{ $user['email'] }}</td>
+                              <td>{{ $user['phone'] }}</td>
+                              <td>{{ $user['address'] }}</td>
+                              <td>{{ $user['updated_at'] }}</td>
+                              @if(auth()->user()->id == $user['id'])
+                              <td>
+                                  <div class="d-flex">
+                                      <form class="" style="margin-right: 10px;" action="{{ route('profile.destroy',$user->id) }}"  method="post">
+                                          @csrf
+                                          @method('delete')
+                                          <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
+                                      </form>
+                                      <div class="col2">
+                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                      </div>
+                                  </div>
+                              </td>
+                              @else
+                              <td></td>
+                              @endif
+                            </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                       </table>
+                      {{ $users->appends(request()->input())->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-<!-- Datatable -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-<script>
-$(document).ready( function () {
-  $('#category-table').DataTable();
-} );
-</script>
