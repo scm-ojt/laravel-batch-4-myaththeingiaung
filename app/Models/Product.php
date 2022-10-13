@@ -34,5 +34,12 @@ class Product extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+    /**
+     * Get all of the product's image.
+     */
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'images');
+    }
 
 }

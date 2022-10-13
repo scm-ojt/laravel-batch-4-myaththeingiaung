@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-// use Illuminate\Foundation\Auth\User;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -103,9 +104,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if($user){
+        if($id == Auth::user()->id){
             $user->delete();
         }
-        return redirect()->back();
+        Toastr::success('Account Delete Successfully!','SUCCESS');
+        return redirect()->route('home');
     }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
-use App\Http\Requests\ProductImportRequest;
-use App\Http\Requests\ProductRequest;
 use App\Imports\ProductsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductImportRequest;
 
 class ProductController extends Controller
 {
@@ -62,6 +63,8 @@ class ProductController extends Controller
             $product->categories()->attach($category);
         }
 
+        $image = new Image();
+        
         return redirect()->route('product.index');
     }
 

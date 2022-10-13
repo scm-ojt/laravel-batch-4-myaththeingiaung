@@ -10,11 +10,17 @@ class ProductRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function rules()
     {
         return [
             'title' => 'required',
             'price' => 'required|regex:/^\d*/',
+            // 'image' => 'required|mimes:jpeg,jpg',
             'category-names' => 'required',
             'description' => 'required',
         ];

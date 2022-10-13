@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -48,7 +49,7 @@ class CategoryController extends Controller
         $category->name = $request['name'];
         $category->save();
         
-        return redirect()->route('category.index');
+        return redirect()->route('admin.category.index');
     }
 
    
@@ -72,14 +73,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryUpdateRequest $request, $id)
     {
         $category = Category::find($id);
 
         $category->name = $request['name'];
         $category->update();
         
-        return redirect()->route('category.index');
+        return redirect()->route('admin.category.index');
     }
 
     /**

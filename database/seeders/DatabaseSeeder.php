@@ -83,53 +83,6 @@ class DatabaseSeeder extends Seeder
 
         //User
         $users = User::factory()->count(5)->create();
-        // $user = new User();
-        // $user->name = 'Mg Mg';
-        // $user->email ='mgmg@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Pyay';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
-
-        // $user = new User();
-        // $user->name = 'Mya Mya';
-        // $user->email ='myamya@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Pyay';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
-
-        // $user = new User();
-        // $user->name = 'Aung Aung';
-        // $user->email ='aungaung@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Yangon';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
-
-        // $user = new User();
-        // $user->name = 'Aye Aye';
-        // $user->email ='ayeaye@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Yangon';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
-
-        // $user = new User();
-        // $user->name = 'Thae Thae';
-        // $user->email ='thaethae@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Mandalay';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
-        
-        // $user = new User();
-        // $user->name = 'Ko Ko';
-        // $user->email ='koko@gmail.com';
-        // $user->phone = '09987654321';
-        // $user->address = 'Mandalay';
-        // $user->password = Hash::make('12345');
-        // $user->remember_token = Str::random(10);
 
     }
 }

@@ -23,6 +23,15 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label for="image" class="form-label">Image</label>
+                            <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image">
+                            @error('image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label for="price" class="form-label">Price</label>
                             <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" autocomplete="price">
                             @error('price')

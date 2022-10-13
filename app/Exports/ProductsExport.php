@@ -37,7 +37,7 @@ class ProductsExport implements WithHeadings,FromCollection,WithMapping
             $product->title,
             $product->description,
             $product->price,
-            $product->categories->category_id,
+            $product->categories
         ];
     }
 

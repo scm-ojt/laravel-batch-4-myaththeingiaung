@@ -2,11 +2,11 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <div>Category List</div>
-                  <a href="{{ route('category.create') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
+                  <a href="{{ route('admin.category.create') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
                 <div class="card-body">
                   <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
@@ -37,13 +37,13 @@
                                 <td>{{ $category['updated_at'] }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <form class="" style="margin-right: 10px;" action="{{ route('category.destroy',$category->id) }}"  method="post">
+                                        <form class="" style="margin-right: 10px;" action="{{ route('admin.category.destroy',$category->id) }}"  method="post">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
                                         </form>
                                         <div class="col2">
-                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('category.edit',$category->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('admin.category.edit',$category->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                         </div>
                                     </div>
                                 </td>

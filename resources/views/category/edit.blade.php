@@ -2,12 +2,15 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-18">
             <div class="card">
-                <div class="card-header">Category Edit</div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>Category Create</div>
+                    <a href="{{ route('admin.category.index') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                  </div>
 
                 <div class="card-body">
-                    <form action="{{ route('category.update',$category->id) }}" method="post">
+                    <form action="{{ route('admin.category.update',$category->id) }}" method="post">
                         @csrf
                         @method('put')
                         <div class="mb-3">

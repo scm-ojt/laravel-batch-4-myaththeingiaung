@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdmin
+class AdminAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,18 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if( Auth::check() && Auth::user()->name == 'admin' ){
+        if (Auth::guard('admin')->user()) {
+
             return $next($request);
-        }else{
-            return redirect()->route('login');
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+
+            return response('Unauthorized.', 401);
+            
+        } else {
+            
+            return redirect(route('adminLogin'));
         }
     }
 }
