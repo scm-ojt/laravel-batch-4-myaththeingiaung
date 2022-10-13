@@ -68,18 +68,29 @@
                             <td>{{ $product['price'] }}</td>
                             <td>{{ $product['updated_at'] }}</td>
                             <td>
-                                @guest
-                                <div class="d-flex">
-                                    <form class="" style="margin-right: 10px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
-                                    </form>
-                                    <div class="col2">
-                                    <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                @if (auth()->guard('admin')->user())
+                                    <div class="d-flex">
+                                        <form class="" style="margin-right: 10px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
+                                        </form>
+                                        <div class="col2">
+                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        </div>
                                     </div>
-                                </div>
-                                @endguest     
+                                @elseif(auth()->user()->id == $product->user?->id)
+                                    <div class="d-flex">
+                                        <form class="" style="margin-right: 10px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
+                                        </form>
+                                        <div class="col2">
+                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        </div>
+                                    </div>
+                                @endif
                             </td>
                             </tr>
                             @endforeach
