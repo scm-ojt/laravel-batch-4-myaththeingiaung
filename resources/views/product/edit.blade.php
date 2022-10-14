@@ -1,13 +1,13 @@
-@extends('../layouts.app')
+@extends('../layouts.backend')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>Product Edit</div>
-                    <a href="{{ route('product.index') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <div><h4>Product Edit</h4></div>
+                    <a href="{{ route('product.index') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
@@ -57,7 +57,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <button class="btn btn-primary">Update</button>
+                        <button class="btn btn-color">Update</button>
                     </form>
                 </div>
             </div>

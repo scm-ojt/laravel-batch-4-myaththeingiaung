@@ -9,6 +9,9 @@
 
     <title>Blog</title>
 
+    <!-- Css -->
+    <link rel="stylesheet" href="{{ asset('css/backend.css') }}">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -32,26 +35,51 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body class="bg-white">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2">
-                <ul>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('/admin/dashboard') ? 'active' : '' }}">Dashboard</a>
+            <div class="col-2 sidebar">
+                <h1 class="p-4 logo">
+                    <a href="#" class="text-decoration-none logo-txt">Blog</a>
+                </h1>
+                <ul class="list">
+                    <li class="list-item d-flex align-items-center {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                        <i class="fa-solid fa-house-user"></i><a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">Category</a>
+                    <li class="list-item d-flex align-items-center {{ Request::is('admin/category*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-tags"></i><a href="{{ route('admin.category.index') }}" class="nav-link">Category</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('category*') ? 'active' : '' }}">Product</a>
+                    <li class="list-item d-flex align-items-center {{ Request::is('product*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-box-open"></i><a href="{{ route('product.index') }}" class="nav-link">Product</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">User</a>
+                    <li class="list-item d-flex align-items-center {{ Request::is('admin/profile*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-user-plus"></i><a href="{{ route('admin.profile.index') }}" class="nav-link">User</a>
                     </li>
                 </ul>
             </div>
-            <div class="col-10">
+            <div class="col-10 content" style="background-color: #e3e3e3;">
+                <div class="nav d-flex justify-content-between">
+                    <div class="">
+
+                    </div>
+                    {{-- <div class="dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ auth()->guard('admin')->user()->name }}
+                        </a>
+                        <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <a href="{{ route('profile.show', Auth::guard('admin')->user()->id) }}" class="dropdown-item">profile</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="" class="d-none">
+                                @csrf
+                            </form>
+                        </div>    
+                    </div> --}}
+                </div>
                 @yield('content')
             </div>
         </div>

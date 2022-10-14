@@ -7,7 +7,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,20 +22,20 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/backend', [App\Http\Controllers\HomeController::class, 'backend'])->name('backend');
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 
-    // Product             
-    Route::get('/product',[ProductController::class, 'index'])->name('product.index');
-    Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
-    Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
-    Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
-    Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
-    Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
+Route::get('/profile/show/{id}',[UserController::class, 'show'])->name('profile.show');
 
-    Route::resource('profile',UserController::class);
-
+// Product             
+Route::get('/product',[ProductController::class, 'index'])->name('product.index');
+Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
+Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
+Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
+Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
+Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
+Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
 
 Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
@@ -54,4 +53,12 @@ Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'
     //Product
     Route::post('/product/import',[ProductController::class, 'import'])->name('product.import');
     Route::get('/product/export',[ProductController::class, 'export'])->name('product.export');
+
+    //user
+    Route::get('/profile',[UserController::class, 'index'])->name('profile.index');
+    Route::get('/profile/create',[UserController::class, 'create'])->name('profile.create');
+    Route::post('/profile/create',[UserController::class, 'store'])->name('profile.store');
+    Route::delete('/profile/destroy/{id}',[UserController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/edit/{id}',[UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update/{id}',[UserController::class, 'update'])->name('profile.update');
 });

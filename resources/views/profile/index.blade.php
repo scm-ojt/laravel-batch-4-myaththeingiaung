@@ -1,16 +1,16 @@
-@extends('../layouts.app')
+@extends('../layouts.backend')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>User List</div>
-                    @guest
+                    <div><h4>User List</h4></div>
+                    @if(!auth()->guard('admin')->user())
                         @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Register</a>
+                        <a href="{{ route('register') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Register</a>
                         @endif
-                    @endguest
+                    @endif
                   
                 </div>
                 <div class="card-body">
@@ -18,7 +18,7 @@
                     <div class="mb-3 d-inline-block">
                       <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
                     </div>
-                    <button class="btn btn-primary" style="margin-left: 5px">Search</button>
+                    <button class="btn btn-color" style="margin-left: 5px">Search</button>
                   </form>
                     <table class="table" id="category-table">
                         <thead>
@@ -49,7 +49,7 @@
                               @if(auth()->guard('admin')->user())
                               <td>
                                 <div class="d-flex">
-                                    <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('profile.destroy',$user->id) }}"  method="post">
+                                    <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('admin.profile.destroy',$user->id) }}"  method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-danger del-user-btn" data-id="{{ $user->id }}">
@@ -59,14 +59,14 @@
                                       </button>
                                     </form>
                                     <div class="col2">
-                                      <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                      <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                     </div>
                                 </div>
                               </td>
                               @elseif(auth()->user()->id == $user->id)
                               <td>
                                   <div class="d-flex">
-                                      <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('profile.destroy',$user->id) }}"  method="post">
+                                      <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('admin.profile.destroy',$user->id) }}"  method="post">
                                           @csrf
                                           @method('delete')
                                           <button class="btn btn-danger del-user-btn" data-id="{{ $user->id }}">
@@ -76,7 +76,7 @@
                                         </button>
                                       </form>
                                       <div class="col2">
-                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                       </div>
                                   </div>
                               </td>

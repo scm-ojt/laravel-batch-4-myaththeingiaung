@@ -28,7 +28,7 @@ class AdminAuthenticate
             
         } else {
             
-            return redirect(route('adminLogin'));
+            return redirect(route('admin.login'));
         }
     }
 }

@@ -27,27 +27,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -68,9 +47,19 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::where('id',$id)->first();
-        if($user->id != auth()->user()->id){
-            abort(404);
+        if(auth()->user()->id != null){
+            if($user->id != auth()->user()->id){
+                abort(404);
+            }
+            abort(404); 
         }
+        if(auth()->guard('admin')->user())
+        {
+            return view('profile.edit',compact('user'));           
+        }
+
+        
+
         return view('profile.edit',compact('user'));
     }
 
@@ -92,7 +81,7 @@ class UserController extends Controller
         $user->password = $request['password'];
         $user->update();
         
-        return redirect()->route('profile.index');
+        return redirect()->route('admin.profile.index');
     }
 
     /**

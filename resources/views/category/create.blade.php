@@ -1,12 +1,12 @@
-@extends('../layouts.app')
+@extends('../layouts.backend')
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>Category Create</div>
-                    <a href="{{ route('admin.category.index') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <div><h4>Category Create</h4></div>
+                    <a href="{{ route('admin.category.index') }}" style="background-color:rgba(138, 0, 212,0.9);color:white;" class="btn d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
@@ -21,7 +21,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <button class="btn btn-primary">Create</button>
+                        <button style="background-color:rgba(138, 0, 212,0.9);color:white;" class="btn">Create</button>
                     </form>
                 </div>
             </div>

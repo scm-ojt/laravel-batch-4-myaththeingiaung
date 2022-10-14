@@ -17,9 +17,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if($request['name']!= null){
-            $categories = Category::where('name','LIKE','%'.$request->name.'%')->paginate(5);               
+            $categories = Category::where('name','LIKE','%'.$request->name.'%')->paginate(10);               
         }else{
-            $categories = Category::orderBy('id','desc')->paginate(5);
+            $categories = Category::orderBy('id','desc')->paginate(10);
         }
         $i = ($request->input('page', 1) - 1) * 5;
 

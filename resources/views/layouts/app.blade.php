@@ -72,10 +72,6 @@
                             <li class="nav-item">
                                 <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('product*') ? 'active' : '' }}">Product</a>
                             </li>
-
-                            <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">User</a>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -95,7 +91,7 @@
 
                             </li>
                         @endguest
-                        @if (auth()->guard('admin')->user())
+                        {{-- @if (auth()->guard('admin')->user())
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">Dashboard</a>
                         </li>
@@ -106,7 +102,7 @@
                             <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('category*') ? 'active' : '' }}">Product</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">User</a>
+                            <a href="{{ route('admin.profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">User</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -125,7 +121,7 @@
                                 </form>
                             </div>    
                         </li>  
-                        @endif 
+                        @endif  --}}
                     </ul>
                 </div>
             </div>

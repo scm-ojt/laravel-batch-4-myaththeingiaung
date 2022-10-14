@@ -1,12 +1,12 @@
-@extends('../layouts.app')
+@extends('../layouts.backend')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                  <div>Product List</div>
-                  <a href="{{ route('product.create') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
+                  <div><h4>Product List</h4></div>
+                  <a href="{{ route('product.create') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
                 
                 <div class="card-body">
@@ -22,15 +22,15 @@
                                     </span>
                                 @enderror
                                 </div>
-                                <button class="btn btn-primary" style="margin: 0 5px;">Import</button>
-                                <a href="{{ route('admin.product.export') }}" class="btn btn-success">Export</a>
+                                <button class="btn btn-color" style="margin: 0 5px;">Import</button>
+                                <a href="{{ route('admin.product.export') }}" class="btn btn-pink">Export</a>
                             </form>
                         @endif
                         <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
                             <div class="mb-3 d-inline-block">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autocomplete="title">
                             </div>
-                            <button class="btn btn-primary" style="margin-left: 5px">Search</button>
+                            <button class="btn btn-color" style="margin-left: 5px">Search</button>
                         </form>
                     </div>
                   <table class="table" id="product-table">
@@ -54,13 +54,11 @@
                             @foreach($products as $product)
                             <tr style="vertical-align: middle;">
                             <td>{{ ++$i }}</td>
-                            {{-- {{ dd($product->user->name) }} --}}
                             <td>
                                 {{ $product->user?->name }}
                             </td>
                             <td>{{ $product['title'] }}</td>
-                            <td>
-                                
+                            <td>  
                                 @foreach ($product->categories as $category)
                                     <span class="badge bg-success">{{ $category->name }}</span>
                                 @endforeach
@@ -76,7 +74,7 @@
                                             <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
                                         </form>
                                         <div class="col2">
-                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                         </div>
                                     </div>
                                 @elseif(auth()->user()->id == $product->user?->id)
@@ -87,7 +85,7 @@
                                             <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
                                         </form>
                                         <div class="col2">
-                                        <a class="btn btn-info d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                        <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                         </div>
                                     </div>
                                 @endif

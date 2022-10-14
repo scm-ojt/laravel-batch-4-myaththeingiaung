@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.backend')
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Edit Profile') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('profile.update',$user->id) }}">
+                    <form method="POST" action="{{ route('admin.profile.update',$user->id) }}">
                         @csrf
                         @method('put')
                         
