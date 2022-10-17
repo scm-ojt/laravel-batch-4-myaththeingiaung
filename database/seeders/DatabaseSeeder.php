@@ -6,8 +6,8 @@ namespace Database\Seeders;
 use Faker\Factory;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,11 +34,7 @@ class DatabaseSeeder extends Seeder
         // Category
         // $categories = Category::factory()->count(10)->create();
         $category = new Category();
-        $category->name = 'Dell';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Oppo';
+        $category->name = 'Laptop';
         $category->save();
 
         $category = new Category();
@@ -46,43 +42,31 @@ class DatabaseSeeder extends Seeder
         $category->save();
 
         $category = new Category();
-        $category->name = 'Mouse';
+        $category->name = 'Phone';
         $category->save();
 
         $category = new Category();
-        $category->name = 'Adapter';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Samsung';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Fruits';
+        $category->name = 'Car';
         $category->save();
 
         $category = new Category();
         $category->name = 'Bag';
         $category->save();
 
-        $category = new Category();
-        $category->name = 'MI';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Vivo';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Acer';
-        $category->save();
-
-        $category = new Category();
-        $category->name = 'Asus';
-        $category->save();
-
         //User
-        $users = User::factory()->count(5)->create();
+        User::factory(5)->has(
+            Product::factory()->count(2)
+        )->create();
+
+        $categories = Category::all();
+
+        // Populate the pivot table
+        Product::all()->each(function ($product) use ($categories) { 
+            $product->categories()->attach(
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
+            ); 
+        });
+
 
     }
 }

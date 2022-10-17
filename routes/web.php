@@ -22,20 +22,12 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/backend', [App\Http\Controllers\HomeController::class, 'backend'])->name('backend');
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 
-Route::get('/profile/show/{id}',[UserController::class, 'show'])->name('profile.show');
 
 // Product             
-Route::get('/product',[ProductController::class, 'index'])->name('product.index');
-Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
-Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
-Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
-Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
-Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
-Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
+
 
 Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
@@ -51,6 +43,13 @@ Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'
     Route::put('/category/update/{id}',[CategoryController::class, 'update'])->name('category.update');
 
     //Product
+    Route::get('/product',[ProductController::class, 'index'])->name('product.index');
+    Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
+    Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
+    Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
+    Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
+    Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
+    Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
     Route::post('/product/import',[ProductController::class, 'import'])->name('product.import');
     Route::get('/product/export',[ProductController::class, 'export'])->name('product.export');
 
@@ -58,6 +57,7 @@ Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'
     Route::get('/profile',[UserController::class, 'index'])->name('profile.index');
     Route::get('/profile/create',[UserController::class, 'create'])->name('profile.create');
     Route::post('/profile/create',[UserController::class, 'store'])->name('profile.store');
+    Route::get('/profile/show/{id}',[UserController::class, 'show'])->name('profile.show');
     Route::delete('/profile/destroy/{id}',[UserController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/edit/{id}',[UserController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update/{id}',[UserController::class, 'update'])->name('profile.update');

@@ -52,7 +52,11 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $product = new Product();
-        $product->user_id = auth()->user()->id;
+        if(auth()->guard('admin')->user()){
+            $product->user_id = 1;
+        }else{
+            $product->user_id = auth()->user()->id;
+        }
         $product->title = $request['title'];
         $product->price = $request['price'];
         $product->description = $request['description'];
@@ -65,7 +69,7 @@ class ProductController extends Controller
 
         $image = new Image();
         
-        return redirect()->route('product.index');
+        return redirect()->route('admin.product.index');
     }
 
     /**
@@ -115,7 +119,7 @@ class ProductController extends Controller
             $product->categories()->attach($category);
         }
         
-        return redirect()->route('product.index');
+        return redirect()->route('admin.product.index');
     }
 
     /**

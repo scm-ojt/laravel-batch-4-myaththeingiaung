@@ -17,7 +17,6 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' =>fake()->randomDigit(),
             'title' => fake()->name(),
             'description' => fake()->text(),
             'price' => fake()->randomDigit()

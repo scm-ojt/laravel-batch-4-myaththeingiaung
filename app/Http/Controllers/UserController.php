@@ -27,6 +27,29 @@ class UserController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('profile.create');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $check = $this->create($data);
+         
+        return redirect()->route('admin.profile.index')->withSuccess('You have signed-in');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -47,18 +70,16 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::where('id',$id)->first();
-        if(auth()->user()->id != null){
+
+        if(auth()->guard('admin')->user())
+        {
+            return view('profile.edit',compact('user'));           
+        }elseif(auth()->user()->id != null){
             if($user->id != auth()->user()->id){
                 abort(404);
             }
             abort(404); 
         }
-        if(auth()->guard('admin')->user())
-        {
-            return view('profile.edit',compact('user'));           
-        }
-
-        
 
         return view('profile.edit',compact('user'));
     }
@@ -93,7 +114,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if($id == Auth::user()->id){
+        if(auth()->guard('admin')->user()){
+            $user->delete();
+            return redirect()->route('admin.profile.index');
+        }elseif($id == Auth::user()->id){
             $user->delete();
         }
         Toastr::success('Account Delete Successfully!','SUCCESS');

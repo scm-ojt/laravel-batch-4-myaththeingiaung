@@ -1,4 +1,4 @@
-@extends('../layouts.backend')
+@extends('../layouts.adminlte')
 
 @section('content')
 <div class="container">
@@ -7,11 +7,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div><h4>Product Edit</h4></div>
-                    <a href="{{ route('product.index') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <a href="{{ route('admin.product.index') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
-                    <form action="{{ route('product.update',$product->id) }}" method="post">
+                    <form action="{{ route('admin.product.update',$product->id) }}" method="post">
                         @csrf
                         @method('put')
                         <div class="mb-3">

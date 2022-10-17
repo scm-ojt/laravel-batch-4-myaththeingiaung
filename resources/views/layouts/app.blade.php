@@ -88,40 +88,8 @@
                                         @csrf
                                     </form>
                                 </div>    
-
                             </li>
                         @endguest
-                        {{-- @if (auth()->guard('admin')->user())
-                        <li class="nav-item">
-                            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('category*') ? 'active' : '' }}">Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.profile.index') }}" class="nav-link {{ Request::is('profile*') ? 'active' : '' }}">User</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ auth()->guard('admin')->user()->name }}
-                            </a>
-                            <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                <a href="{{ route('profile.show', Auth::guard('admin')->user()->id) }}" class="dropdown-item">profile</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('admin.logout') }}" method="" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>    
-                        </li>  
-                        @endif  --}}
                     </ul>
                 </div>
             </div>

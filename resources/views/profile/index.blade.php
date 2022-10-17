@@ -1,25 +1,19 @@
-@extends('../layouts.backend')
+@extends('../layouts.adminlte')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div><h4>User List</h4></div>
-                    @if(!auth()->guard('admin')->user())
-                        @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Register</a>
-                        @endif
-                    @endif
-                  
+            <div class="card mt-4">
+                <div class="card-header clearfix">
+                    <div class="lft" style="float: left"><h4>User List</h4></div>      
+                    <form action="" class="rgt d-flex align-items-start justify-content-end" style="float: right;">
+                      <div class="mb-3 d-inline-block">
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
+                      </div>
+                      <input type="submit" class="btn btn-primary" value="search" style="margin-left: 5px">
+                    </form>       
                 </div>
                 <div class="card-body">
-                  <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
-                    <div class="mb-3 d-inline-block">
-                      <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
-                    </div>
-                    <button class="btn btn-color" style="margin-left: 5px">Search</button>
-                  </form>
                     <table class="table" id="category-table">
                         <thead>
                           <tr>
@@ -52,14 +46,14 @@
                                     <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('admin.profile.destroy',$user->id) }}"  method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger del-user-btn" data-id="{{ $user->id }}">
+                                        <button class="btn btn-danger del-user-btn" style="width:100px" data-id="{{ $user->id }}">
                                           <a href="javascript:;" class="d-block del-user-btn text-decoration-none text-white ">
                                               <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
                                           </a>
                                       </button>
                                     </form>
                                     <div class="col2">
-                                      <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                      <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                     </div>
                                 </div>
                               </td>
@@ -93,6 +87,7 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection
 @push('js')

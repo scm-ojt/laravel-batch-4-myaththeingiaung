@@ -1,17 +1,17 @@
-@extends('../layouts.backend')
+@extends('../layouts.adminlte')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div><h4>Product Create</h4></div>
-                    <a href="{{ route('product.index') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <a href="{{ route('admin.product.index') }}" class="btn btn-color d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
-                    <form action="{{ route('product.store') }}" method="post">
+                    <form action="{{ route('admin.product.store') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Image</label>
-                            <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image">
+                            <input id="image" type="file" class="form-control pt-1 @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image">
                             @error('image')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -62,7 +62,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <button class="btn btn-color">Create</button>
+                        <button class="btn btn-primary">Create</button>
                     </form>
                 </div>
             </div>

@@ -44,13 +44,13 @@
                 </h1>
                 <ul class="list">
                     <li class="list-item d-flex align-items-center {{ Request::is('admin/dashboard') ? 'active' : '' }}">
-                        <i class="fa-solid fa-house-user"></i><a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
+                        <i class="fa-solid fa-house"></i><a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
                     </li>
                     <li class="list-item d-flex align-items-center {{ Request::is('admin/category*') ? 'active' : '' }}">
                         <i class="fa-solid fa-tags"></i><a href="{{ route('admin.category.index') }}" class="nav-link">Category</a>
                     </li>
                     <li class="list-item d-flex align-items-center {{ Request::is('product*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-box-open"></i><a href="{{ route('product.index') }}" class="nav-link">Product</a>
+                        <i class="fa-solid fa-box-open"></i><a href="{{ route('admin.product.index') }}" class="nav-link">Product</a>
                     </li>
                     <li class="list-item d-flex align-items-center {{ Request::is('admin/profile*') ? 'active' : '' }}">
                         <i class="fa-solid fa-user-plus"></i><a href="{{ route('admin.profile.index') }}" class="nav-link">User</a>
@@ -62,12 +62,12 @@
                     <div class="">
 
                     </div>
-                    {{-- <div class="dropdown">
+                    <div class="dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ auth()->guard('admin')->user()->name }}
                         </a>
                         <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <a href="{{ route('profile.show', Auth::guard('admin')->user()->id) }}" class="dropdown-item">profile</a>
+                            <a href="{{ route('admin.profile.show', Auth::guard('admin')->user()->id) }}" class="dropdown-item">profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
@@ -78,7 +78,7 @@
                                 @csrf
                             </form>
                         </div>    
-                    </div> --}}
+                    </div>
                 </div>
                 @yield('content')
             </div>

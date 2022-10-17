@@ -1,12 +1,12 @@
-@extends('../layouts.backend')
+@extends('../layouts.adminlte')
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div><h4>Category Edit</h4></div>
-                    <a href="{{ route('admin.category.index') }}" style="background-color:rgba(138, 0, 212,0.9);color:white;" class="btn d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <a href="{{ route('admin.category.index') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
@@ -22,7 +22,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <button style="background-color:rgba(138, 0, 212,0.9);color:white;" class="btn">Update</button>
+                        <button class="btn btn-primary">Update</button>
                     </form>
                 </div>
             </div>
