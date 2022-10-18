@@ -31,11 +31,6 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader -->
-  {{-- <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
-  </div> --}}
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -50,6 +45,16 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <div class="d-flex border p-1 rounded">
+          <div class="image">
+            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" style="width:40px;" class="img-circle img-fluid elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="#" class="d-block nav-link">{{ auth()->guard('admin')->user()->name }}</a>
+          </div>
+        </div>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -97,80 +102,32 @@
               </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
+              <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
                 <i class="nav-icon fa-solid fa-tags"></i>
-                <p>
-                    Category
-                    <i class="fas fa-angle-left right"></i>
-                    {{-- <span class="badge badge-info right">12</span> --}}
-                </p>
-                </a>
-                <ul class="nav nav-treeview">                
-                    <li class="nav-item">
-                        <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>List</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.category.create') }}" class="nav-link {{ Request::is('admin/category/create') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Create</p>
-                        </a>
-                </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('admin/product*') ? 'active' : '' }}">
-                <i class="nav-icon fa-solid fa-box-open"></i>
-                <p>
-                    Product
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ route('admin.product.index') }}" class="nav-link {{ Request::is('admin/product') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>List</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('admin/profile*') ? 'active' : '' }}">
-                    <i class="nav-icon fa-solid fa-user-plus"></i>
-                <p>
-                    User
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{ route('admin.profile.index') }}" class="nav-link {{ Request::is('admin/profile') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>List</p>
-                        </a>
-                    </li>     
-                    <li class="nav-item">
-                      <a href="{{ route('admin.profile.create') }}" class="nav-link {{ Request::is('admin/profile/create') ? 'active' : '' }}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Create</p>
-                      </a>
-                  </li>           
-                </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ route('logout') }}"
-              onclick="event.preventDefault();
-              document.getElementById('logout-form').submit();">
-                <i class="nav-icon fa-solid fa-right-from-bracket"></i>{{ __('Logout') }}
+                <p>Category</p>
               </a>
-
-              <form id="logout-form" action="{{ route('admin.logout') }}" method="" class="d-none">
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('admin.product.index') }}" class="nav-link {{ Request::is('admin/product*') ? 'active' : '' }}">
+                <i class="nav-icon fa-solid fa-box-open"></i>
+                <p>Product</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('admin.profile.index') }}" class="nav-link {{ Request::is('admin/profile*') ? 'active' : '' }}">
+                <i class="nav-icon fa-solid fa-user-plus"></i>
+                <p>User</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="nav-link">
+                <i class="nav-icon fa-solid fa-right-from-bracket"></i>
+                <p>Logout</p>
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="" class="d-none">
                   @csrf
               </form>
-          </li>
+              </a>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

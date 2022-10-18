@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Exports\ProductsExport;
-use App\Imports\ProductsImport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ProductRequest;
-use App\Http\Requests\ProductImportRequest;
+use App\Mail\ProductDeleteMail;
 
 class ProductController extends Controller
 {
@@ -52,11 +51,6 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $product = new Product();
-        if(auth()->guard('admin')->user()){
-            $product->user_id = 1;
-        }else{
-            $product->user_id = auth()->user()->id;
-        }
         $product->title = $request['title'];
         $product->price = $request['price'];
         $product->description = $request['description'];
@@ -80,7 +74,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        
+        return view('product.show',compact('product'));
     }
 
     /**
@@ -131,27 +127,13 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $email = $product->user->email;
         if($product){
             $product->categories()->detach();
             $product->delete();
         }
 
-        return redirect()->back();
-    }
-
-    /**
-     * Excel export for Product
-     */
-    public function export(Product $product) 
-    {
-        $time = 1;
-        return Excel::download(new ProductsExport($product) , 'product'.$time.'.xlsx');
-    }
-
-    public function import(ProductImportRequest $request) 
-    {
-        Excel::import(new ProductsImport, $request['file']);
-        
-        return redirect('/')->with('success', 'All good!');
+        Mail::to($email)->send(new ProductDeleteMail($product));
+        return redirect()->route('admin.product.index');
     }
 }

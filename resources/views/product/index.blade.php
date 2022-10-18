@@ -6,7 +6,6 @@
             <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <div><h4>Product List</h4></div>
-                  <a href="{{ route('admin.product.create') }}" class="btn ml-auto btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
                 
                 <div class="card-body">
@@ -30,7 +29,7 @@
                             <div class="mb-3 d-inline-block">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autocomplete="title">
                             </div>
-                            <button class="btn btn-primary" style="margin-left: 5px">Search</button>
+                            <button class="btn btn-primary" style="margin-left: 5px"><i class="fas fa-search fa-fw"></i>Search</button>
                         </form>
                     </div>
                   <table class="table" id="product-table">
@@ -74,7 +73,7 @@
                                             <button class="btn btn-danger" style="width: 100px;"><i class="fa-solid fa-trash" style="margin-right: 10px;"></i>Delete</button>
                                         </form>
                                         <div class="col2">
-                                        <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px;" href="{{ route('admin.product.edit',$product->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px;"></i>Edit</a>
+                                        <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px;" href="{{ route('admin.product.show',$product->id) }}"><i class="fa-solid fa-circle-info" style="margin-right: 10px;"></i>Detail</a>
                                         </div>
                                     </div>
                                 @elseif(auth()->user()->id == $product->user?->id)

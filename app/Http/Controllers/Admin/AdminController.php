@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AdminRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -26,8 +27,8 @@ class AdminController extends Controller
     public function login(AdminRequest $request)
     {
         if(auth()->guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')])){
-            $user = auth()->guard('admin')->user();
-            if($user->id){
+            $admin = auth()->guard('admin')->user();
+            if($admin->id){
                 return redirect()->route('admin.dashboard')->with('success','You are Logged in sucessfully.');
             }
         }else {

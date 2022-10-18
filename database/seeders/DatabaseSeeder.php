@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
 
         $categories = Category::all();
 
-        // Populate the pivot table
+        //Populate the pivot table
         Product::all()->each(function ($product) use ($categories) { 
             $product->categories()->attach(
                 $categories->random(rand(1, 3))->pluck('id')->toArray()

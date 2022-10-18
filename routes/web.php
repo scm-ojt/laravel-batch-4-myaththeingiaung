@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +21,17 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 
 
 // Product             
+Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
+Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
+Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
+Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
+Route::get('/profile/show/{id}',[UserController::class, 'show'])->name('profile.show');
 
 
 Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
@@ -44,12 +49,8 @@ Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'
 
     //Product
     Route::get('/product',[ProductController::class, 'index'])->name('product.index');
-    Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
-    Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
     Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
-    Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
     Route::post('/product/import',[ProductController::class, 'import'])->name('product.import');
     Route::get('/product/export',[ProductController::class, 'export'])->name('product.export');
 

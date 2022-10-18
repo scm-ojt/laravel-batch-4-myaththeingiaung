@@ -2,28 +2,42 @@
 
 namespace App\Imports;
 
-use App\Models\Product;
 use App\Models\User;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\CategoryProduct;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToModel
+class ProductsImport implements ToCollection,WithHeadingRow
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
-    {
-        $id = User::find($row[0]);
-        info($id);
-        $product = new Product([
-            'user_id' => $id,
-            'title' => $row[1],
-            'description' => $row[2],
-            'price' => $row[3],
-        ]);
 
-        $product->save();
-    }
+    public function collection(Collection $rows)
+    {
+        foreach ($rows as $row)
+        {
+            info($row['username']);
+            $user = User::where('name',$row['username'])->get();
+            $u = json_encode($user);
+            info($u);
+
+            $product = new Product();
+            $product->user_id = $user->pluck('id')['0'];
+            $product->title = $row['title'];
+            $product->price = $row['price'];
+            $product->description = $row['description'];
+            $product->save();
+
+           $myString = $row['category_name'];
+           $myArray = explode(',', $myString);
+
+           foreach($myArray as $value){
+                $category = Category::where('name',$value)->get();
+                $cat_id = $category->pluck('id');
+                $product->categories()->attach($cat_id);
+            }     
+      }
+   }
+
 }

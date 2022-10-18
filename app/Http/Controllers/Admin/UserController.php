@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\AdminUserCreateRequest;
+use App\Models\Image;
 
 class UserController extends Controller
 {
@@ -41,11 +46,32 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminUserCreateRequest $request)
     {
-        $data = $request->all();
-        $check = $this->create($data);
-         
+
+        $user = new User();
+        $user->name = $request['name'];
+        $user->email = $request['email'];
+        $user->phone = $request['phone'];
+        $user->address = $request['address'];
+        $user->password = Hash::make($request['password']);
+        $user->save();
+
+        if($request['image']){
+            $image = new Image();
+            $file = $request['image'];
+            // return $file->getClientOriginalName();
+            $file_name = uniqid(time()) . '_' . $file;
+            $save_path = public_path('img/users');
+            $file_path = $save_path."/$file_name";
+            // $file->move($save_path, $save_path."/$file_name");
+
+            $image->name = $file_name;
+            $image->path = $file_path;
+
+            $user->images()->save($image);
+        }
+
         return redirect()->route('admin.profile.index')->withSuccess('You have signed-in');
     }
 
@@ -114,13 +140,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $product = Product::where('user_id',$id);
         if(auth()->guard('admin')->user()){
             $user->delete();
+            $product->delete();
             return redirect()->route('admin.profile.index');
         }elseif($id == Auth::user()->id){
             $user->delete();
+            $product->delete();
         }
         Toastr::success('Account Delete Successfully!','SUCCESS');
         return redirect()->route('home');
     }
+
 }

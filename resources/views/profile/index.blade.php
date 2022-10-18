@@ -4,16 +4,17 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card mt-4">
-                <div class="card-header clearfix">
-                    <div class="lft" style="float: left"><h4>User List</h4></div>      
-                    <form action="" class="rgt d-flex align-items-start justify-content-end" style="float: right;">
-                      <div class="mb-3 d-inline-block">
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
-                      </div>
-                      <input type="submit" class="btn btn-primary" value="search" style="margin-left: 5px">
-                    </form>       
+                <div class="card-header d-flex">
+                    <div><h4>User List</h4></div>      
+                    <a href="{{ route('admin.profile.create') }}" class="btn btn-primary ml-auto text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>                          
                 </div>
                 <div class="card-body">
+                  <form action="" class="rgt d-flex align-items-start justify-content-end" style="float: right;">
+                    <div class="mb-3 d-inline-block">
+                      <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
+                    </div>
+                    <button class="btn btn-primary" style="margin-left: 5px"><i class="fas fa-search fa-fw"></i>Search</button>
+                  </form> 
                     <table class="table" id="category-table">
                         <thead>
                           <tr>
