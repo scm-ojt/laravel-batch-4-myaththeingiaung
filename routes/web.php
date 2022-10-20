@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\ProductFrontController;
+use App\Http\Controllers\User\UserFrontController;
+use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +28,23 @@ Route::get('/', [App\Http\Controllers\User\HomeController::class, 'index'])->nam
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 
+Route::middleware('auth','can:update-product')->group(function () {
+    // Product   
+    Route::get('/profile',[ProductFrontController::class, 'profile'])->name('product.index');  
+    Route::get('/product/create',[ProductFrontController::class, 'create'])->name('product.create');
+    Route::post('/product/create',[ProductFrontController::class, 'store'])->name('product.store');        
+    Route::get('/product/edit/{id}',[ProductFrontController::class, 'edit'])->name('product.edit');
+    Route::delete('/product/destroy/{id}',[ProductFrontController::class, 'destroy'])->name('product.destroy');
+    Route::put('/product/update/{id}',[ProductFrontController::class, 'update'])->name('product.update');  
+    Route::get('/product/show/{id}',[ProductFrontController::class, 'show'])->name('product.show');
 
-// Product             
-Route::get('/product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
-Route::put('/product/update/{id}',[ProductController::class, 'update'])->name('product.update');
-Route::get('/product/create',[ProductController::class, 'create'])->name('product.create');
-Route::post('/product/create',[ProductController::class, 'store'])->name('product.store');
-Route::get('/profile/show/{id}',[UserController::class, 'show'])->name('profile.show');
+    //profile
+    Route::get('/profile/show/{id}',[UserFrontController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit/{id}',[UserFrontController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update/{id}',[UserFrontController::class, 'update'])->name('profile.update');    
+});
+
+
 
 
 Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'], function () {

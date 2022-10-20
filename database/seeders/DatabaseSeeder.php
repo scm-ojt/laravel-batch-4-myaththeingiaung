@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
         $category->save();
 
         //User
-        User::factory(5)->has(
+        User::factory(6)->has(
             Product::factory()->count(2)
         )->create();
 
@@ -66,7 +66,6 @@ class DatabaseSeeder extends Seeder
                 $categories->random(rand(1, 3))->pluck('id')->toArray()
             ); 
         });
-
 
     }
 }

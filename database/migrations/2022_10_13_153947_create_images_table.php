@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->String('name');
             $table->String('path');
-            $table->integer('imageable_id');
-            $table->string("imageable_type");
+            $table->integer('imagable_id');
+            $table->string("imagable_type");
             $table->softDeletes();
             $table->timestamps();
         });

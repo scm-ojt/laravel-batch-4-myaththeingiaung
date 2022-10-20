@@ -7,17 +7,18 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AdminUserCreateRequest;
+use App\Http\Requests\AdminUserUpdateRequest;
 use App\Models\Image;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * To show user list
+     * 
+     * @param Request $request request with inputs
+     * @return Object $user user information and View profile index page
      */
     public function index(Request $request)
     {
@@ -28,23 +29,24 @@ class UserController extends Controller
         }
         $i = ($request->input('page', 1) - 1) * 5;
         
-        return view('profile.index',compact('users','i'));
+        return view('admin.profile.index',compact('users','i','request'));
     }
 
     /**
-     * Display a listing of the resource.
+     * To show admin user create form
      *
-     * @return \Illuminate\Http\Response
+     * @return View profile create page
      */
     public function create()
     {
-        return view('profile.create');
+        return view('admin.profile.create');
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * To store user information
+     * 
+     * @param AdminUserCreateRequest $request request with inputs
+     * @return View profile index page
      */
     public function store(AdminUserCreateRequest $request)
     {
@@ -57,65 +59,60 @@ class UserController extends Controller
         $user->password = Hash::make($request['password']);
         $user->save();
 
-        if($request['image']){
-            $image = new Image();
-            $file = $request['image'];
-            // return $file->getClientOriginalName();
-            $file_name = uniqid(time()) . '_' . $file;
-            $save_path = public_path('img/users');
-            $file_path = $save_path."/$file_name";
-            // $file->move($save_path, $save_path."/$file_name");
-
-            $image->name = $file_name;
-            $image->path = $file_path;
-
-            $user->images()->save($image);
-        }
+        $image = new Image();
+        $file = $request['image'];
+        $file_name = uniqid(time()).'_'.$file;
+        $file_path = public_path('img/users')."/$file_name";
+        $image->name = $file_name;
+        $image->path = $file_path;
+        $user->images()->save($image);
+        Toastr::success('User Create Successfully!','SUCCESS');
 
         return redirect()->route('admin.profile.index')->withSuccess('You have signed-in');
     }
 
     /**
-     * Display the specified resource.
+     * To show user details information
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id user id
+     * @return View details page
      */
     public function show($id)
     {
         $user = User::find($id);
-        return view('profile.show',compact('user'));
+
+        return view('admin.profile.show',compact('user'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * To store old value in edit page
+     * 
+     * @param int $id product id
+     * @return View profile edit page
      */
     public function edit($id)
     {
         $user = User::where('id',$id)->first();
 
-        if(auth()->guard('admin')->user())
-        {
-            return view('profile.edit',compact('user'));           
-        }elseif(auth()->user()->id != null){
-            if($user->id != auth()->user()->id){
-                abort(404);
-            }
-            abort(404); 
-        }
+        // if(auth()->guard('admin')->user())
+        // {
+        //     return view('admin.profile.edit',compact('user'));           
+        // }elseif(auth()->user()->id != null){
+        //     if($user->id != auth()->user()->id){
+        //         abort(404);
+        //     }
+        //     abort(404); 
+        // }
 
-        return view('profile.edit',compact('user'));
+        return view('admin.profile.edit',compact('user'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * To update user by id
+     * 
+     * @param AdminUserUpdateRequest $request request with inputs
+     * @param int $id user id
+     * @return View profile index
      */
     public function update(Request $request, $id)
     {
@@ -127,30 +124,39 @@ class UserController extends Controller
         $user->address = $request['address'];
         $user->password = $request['password'];
         $user->update();
+
+        $image = Image::where('imagable_id',$id)->first();
+        $file = $request['image'];
+        $file_name = uniqid(time()).'_'.$file;
+        $file_path = public_path('img/users')."/$file_name";
+        $image->name = $file_name;
+        $image->path = $file_path;
+        $user->images()->save($image);
+        Toastr::success('User Update Successfully!','SUCCESS');
         
         return redirect()->route('admin.profile.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * To delete user by id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id user id
+     * @return View profile index page 
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $product = Product::where('user_id',$id);
-        if(auth()->guard('admin')->user()){
-            $user->delete();
-            $product->delete();
-            return redirect()->route('admin.profile.index');
-        }elseif($id == Auth::user()->id){
-            $user->delete();
-            $product->delete();
-        }
+        $user->delete();
+        $product->delete();
+
         Toastr::success('Account Delete Successfully!','SUCCESS');
-        return redirect()->route('home');
+        
+        return redirect()->route('admin.profile.index');
+    }
+
+    public function storeImage($user){
+
     }
 
 }

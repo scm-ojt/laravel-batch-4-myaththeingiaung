@@ -2,58 +2,60 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Image;
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
+use App\Mail\ProductDeleteMail;
 use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductImportRequest;
-use App\Mail\ProductDeleteMail;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * To show product information
+     * 
+     * @param Request $request request with inputs
+     * @return $product product object
      */
     public function index(Request $request)
     {
         if($request['title']!= null){
-            $products = Product::where('title','LIKE','%'.$request->title.'%')->paginate(5);               
-        }else{
+            $products = Product::join("users", function ($join) {
+                $join->on("products.user_id", "=", "users.id");
+            })->orwhere('users.name','LIKE','%'.$request->title.'%')
+            ->orwhere('products.title','LIKE','%'.$request->title.'%')->paginate(5);               
+        }else
+        {
             $products = Product::orderBy('id','desc')->paginate(5);
         }
         $i = ($request->input('page', 1) - 1) * 5;
 
-        return view('product.index',compact('products','i'));
+        return view('admin.product.index',compact('products','i','request'));
     }
 
-
     /**
-     * Display the specified resource.
+     * To show product detail information
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id product id
+     * @return $product Product Object
      */
     public function show($id)
     {
         $product = Product::find($id);
         
-        return view('product.show',compact('product'));
+        return view('admin.product.show',compact('product'));
     }
 
 
     /**
-     * Remove the specified resource from storage.
+     * To delete product by id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id product id
+     * @return View index product and sending email to user
      */
     public function destroy($id)
     {
@@ -65,22 +67,34 @@ class ProductController extends Controller
         }
 
         Mail::to($email)->send(new ProductDeleteMail($product));
+        Toastr::success('Product Delete Successfully!','SUCCESS');
+        
         return redirect()->route('admin.product.index');
     }
 
     /**
-     * Excel export for Product
+     * To export product information
+     * 
+     * @param Product $product object
+     * @return View index product
      */
     public function export(Product $product) 
     {
-        $time = 1;
-        return Excel::download(new ProductsExport($product) , 'product'.$time.'.xlsx');
+
+        return Excel::download(new ProductsExport($product) , 'product'.uniqid(time()).'.xlsx');
     }
 
+    /**
+     * To import product information
+     * 
+     * @param ProductImportRequest $request request with inputs 
+     * @return View index product
+     */
     public function import(ProductImportRequest $request) 
     {
         Excel::import(new ProductsImport, $request['file']);
+        Toastr::success('CSV Import Successfully!','SUCCESS');
         
-        return redirect('/')->with('success', 'All good!');
+        return redirect()->route('admin.product.index')->with('success', 'All good!');
     }
 }

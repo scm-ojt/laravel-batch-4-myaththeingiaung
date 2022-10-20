@@ -10,9 +10,9 @@ class AdminController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
+     * To show admin login form
      *
-     * @return \Illuminate\Http\Response
+     * @return View admin login page
      */
     public function showLoginForm()
     {
@@ -20,9 +20,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Handle a login request to the application.
      *
-     * @return \Illuminate\Http\Response
+     * @param AdminRequest $request with input data
+     * @return View admin dashboard
      */
     public function login(AdminRequest $request)
     {
@@ -36,10 +37,17 @@ class AdminController extends Controller
         }
     }
 
-    public function logout(){
+    /**
+     * Log the user out of the application.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout()
+    {
         auth()->guard('admin')->logout();
         Session::flush();
         Session::put('success', 'You are logout sucessfully');
+
         return redirect(route('home'));
     }
 }

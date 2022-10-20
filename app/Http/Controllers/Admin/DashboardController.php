@@ -8,11 +8,12 @@ class DashboardController extends Controller
 {
     
     /**
-     * Undocumented function
+     * To show admin dashboard
      *
-     * @return void
+     * @return View admin dashboard page
      */
-    public function index(){
-        return view('admin.dashboard');
+    public function index()
+    {
+        return view('admin.dashboard.dashboard');
     }
 }

@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\User;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * To show Product Information
      *
-     * @return void
-     */
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View home page
      */
     public function index()
     {
-        return view('home');
+        $products = Product::orderBy('id','desc')->paginate(6);
+        $users = User::all();
+        return view('home',compact('products','users'));
     }
 
 }
