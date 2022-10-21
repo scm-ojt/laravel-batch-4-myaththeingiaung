@@ -20,7 +20,7 @@ class ProductRequest extends FormRequest
         return [
             'title' => 'required',
             'price' => 'required|regex:/^\d*/',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,jfif',
             'category-names' => 'required',
             'description' => 'required',
         ];

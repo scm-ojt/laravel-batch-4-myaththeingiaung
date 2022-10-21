@@ -2,21 +2,20 @@
 
 namespace App\Exports;
 
-use App\Models\Product;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithMapping;
 
 class ProductsExport implements WithHeadings,FromCollection,WithMapping
 {
     use Exportable;
 
     // a place to store the team dependency
-    private $product;
+    protected $product;
 
     // use constructor to handle dependency injection
-    public function __construct(Product $product)
+    public function __construct($product)
     {
         $this->product = $product;
     }
@@ -24,8 +23,8 @@ class ProductsExport implements WithHeadings,FromCollection,WithMapping
     // set the collection of product to export
     public function collection()
     {
-        return $this->product;
-    }
+            return $this->product;
+    }       
 
     // map what a single member row should look like
     // this method will iterate over each collection item

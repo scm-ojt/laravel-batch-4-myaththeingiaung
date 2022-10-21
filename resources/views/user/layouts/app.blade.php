@@ -28,7 +28,6 @@
     <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
     {!! Toastr::message() !!}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -73,7 +72,7 @@
                                 <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product*') ? 'active' : '' }}">Product</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('product.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : '' }}">Profile</a>
+                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : '' }}">Profile</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

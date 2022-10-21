@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -32,7 +33,6 @@ class DatabaseSeeder extends Seeder
         $admin->save();
 
         // Category
-        // $categories = Category::factory()->count(10)->create();
         $category = new Category();
         $category->name = 'Laptop';
         $category->save();
@@ -67,5 +67,15 @@ class DatabaseSeeder extends Seeder
             ); 
         });
 
-    }
+        // foreach ((range(1, 6)) as $index) {
+        //     DB::table('images')->insert(
+        //         [
+        //             'name' =>  $faker->image('public/img/seeder',400,300, null, false),
+        //             'path' =>  $faker->image('public/img/seeder',400,300, null, false) ,
+        //             'imagable_id' => rand(1, 6),
+        //             'imagable_type' =>  'App\User'
+        //         ]
+        //     );
+        // }
+}
 }

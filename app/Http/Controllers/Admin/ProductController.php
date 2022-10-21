@@ -23,18 +23,25 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        if($request['title']!= null){
-            $products = Product::join("users", function ($join) {
-                $join->on("products.user_id", "=", "users.id");
-            })->orwhere('users.name','LIKE','%'.$request->title.'%')
-            ->orwhere('products.title','LIKE','%'.$request->title.'%')->paginate(5);               
-        }else
-        {
-            $products = Product::orderBy('id','desc')->paginate(5);
+        if($request->isMethod('get')){
+            $search = $request->input('title');
+            $i = ($request->input('page', 1) - 1) * 5;
+            if($request->has('search')){
+                $products = Product::join("users", function ($join) {
+                    $join->on("products.user_id", "=", "users.id");
+                })->orwhere('users.name','LIKE','%'.$search.'%')
+                ->orwhere('products.title','LIKE','%'.$search.'%')->paginate(5); 
+            }elseif($request->has('export')){
+                $products = Product::join("users", function ($join) {
+                    $join->on("products.user_id", "=", "users.id");
+                })->orwhere('users.name','LIKE','%'.$search.'%')
+                ->orwhere('products.title','LIKE','%'.$search.'%')->get();
+                return Excel::download(new ProductsExport($products) , 'product'.uniqid(time()).'.xlsx');
+            }else{
+                $products = Product::orderBy('id','desc')->paginate(5);
+            }
+            return view('admin.product.index',compact('products','i','request'));
         }
-        $i = ($request->input('page', 1) - 1) * 5;
-
-        return view('admin.product.index',compact('products','i','request'));
     }
 
     /**
@@ -70,18 +77,6 @@ class ProductController extends Controller
         Toastr::success('Product Delete Successfully!','SUCCESS');
         
         return redirect()->route('admin.product.index');
-    }
-
-    /**
-     * To export product information
-     * 
-     * @param Product $product object
-     * @return View index product
-     */
-    public function export(Product $product) 
-    {
-
-        return Excel::download(new ProductsExport($product) , 'product'.uniqid(time()).'.xlsx');
     }
 
     /**

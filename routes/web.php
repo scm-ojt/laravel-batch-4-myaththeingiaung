@@ -28,7 +28,7 @@ Route::get('/', [App\Http\Controllers\User\HomeController::class, 'index'])->nam
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 
-Route::middleware('auth','can:update-product')->group(function () {
+Route::middleware('auth')->group(function () {
     // Product   
     Route::get('/profile',[ProductFrontController::class, 'profile'])->name('product.index');  
     Route::get('/product/create',[ProductFrontController::class, 'create'])->name('product.create');
@@ -39,6 +39,7 @@ Route::middleware('auth','can:update-product')->group(function () {
     Route::get('/product/show/{id}',[ProductFrontController::class, 'show'])->name('product.show');
 
     //profile
+    Route::get('/profile',[UserFrontController::class, 'userProduct'])->name('profile.index');
     Route::get('/profile/show/{id}',[UserFrontController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit/{id}',[UserFrontController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update/{id}',[UserFrontController::class, 'update'])->name('profile.update');    
@@ -65,7 +66,6 @@ Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'
     Route::delete('/product/destroy/{id}',[ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/show/{id}',[ProductController::class, 'show'])->name('product.show');
     Route::post('/product/import',[ProductController::class, 'import'])->name('product.import');
-    Route::get('/product/export',[ProductController::class, 'export'])->name('product.export');
 
     //user
     Route::get('/profile',[UserController::class, 'index'])->name('profile.index');

@@ -6,7 +6,11 @@ use App\Models\Image;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Mail\ProductDeleteMail;
 use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 
@@ -53,12 +57,13 @@ class ProductFrontController extends Controller
         $image = new Image();
         $file = request()->file('image');
         $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-        $file_path = public_path('img/products')."/$file_name";
+        $file_path = 'img/products'."/$file_name";
         $image->name = $file_name;
         $image->path = $file_path;
         $file->move(public_path('img/products'), $file_path);
         $product->images()->save($image);
         
+        Toastr::success('Product Create Successfully!','SUCCESS');
         return redirect()->route('home');
     }
 
@@ -83,16 +88,18 @@ class ProductFrontController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        $product = Product::find($id); 
-        $categories = Category::all();
-        
-        return view('user.product.edit',compact('product','categories'));
+        $product = Product::find($id);
+        if (Gate::allows('update-product', $product)) {
+            $categories = Category::all();
+            return view('user.product.edit',compact('product','categories'));
+        }else{
+            abort(403);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
+     /**
+     * Show the form for editing the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -113,7 +120,7 @@ class ProductFrontController extends Controller
 
         $image = Image::where('imagable_id',$id)->first();
         if(request()->hasFile('image')){
-            unlink(public_path('img/products/'.$image->name));
+            unlink(public_path('img/products/'.$image->name));         
             $file = request()->file('image');
             $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
             $file_path = 'img/products'."/$file_name";
@@ -122,7 +129,8 @@ class ProductFrontController extends Controller
             $file->move(public_path('img/products'), $file_path);
             $product->images()->save($image);
         }
-        
+        Toastr::success('Product Update Successfully!','SUCCESS');
+
         return redirect()->route('home');
     }
 
@@ -135,12 +143,16 @@ class ProductFrontController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $email = $product->user->email;
         if($product){
             unlink(public_path('img/products/').$product->images[0]->name);
             $product->categories()->detach();
             $product->images()->delete();  
             $product->delete();
         }
+
+        Mail::to($email)->send(new ProductDeleteMail($product));
+        Toastr::success('Product Delete Successfully!','SUCCESS');
 
         return redirect()->route('home');
     }

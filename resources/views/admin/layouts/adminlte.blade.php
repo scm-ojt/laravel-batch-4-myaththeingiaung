@@ -181,8 +181,9 @@
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 {!! Toastr::message() !!}
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/user.js') }}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stack('js')
 </body>
 </html>

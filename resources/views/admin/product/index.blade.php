@@ -21,13 +21,13 @@
                                 @enderror
                                 </div>
                                 <button class="btn btn-warning text-white" style="margin: 0 5px;">Import</button>
-                                <a href="{{ route('admin.product.export') }}" class="btn btn-success">Export</a>
                             </form>
-                        <form action="" class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
+                        <form class="mt-2 d-flex align-items-start justify-content-end" style="margin-left: 15px">
                             <div class="mb-3 d-inline-block">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ $request->title }}" autocomplete="title">
                             </div>
-                            <button id="search" class="btn btn-primary" style="margin-left: 5px"><i class="fas fa-search fa-fw"></i>Search</button>
+                            <button name="search" id="search" class="btn btn-primary" style="margin:0px 5px"><i class="fas fa-search fa-fw"></i>Search</button>
+                            <button name="export" class="btn btn-success">Export</button>
                         </form>
                     </div>
                   <table class="table" id="product-table">
@@ -64,10 +64,10 @@
                             <td>{{ $product['updated_at'] }}</td>
                             <td>       
                                 <div class="d-flex">
-                                    <form class="productDeleteForm{{$product->id}}" style="margin-right: 10px;" action="{{ route('admin.product.destroy',$product->id) }}"  method="post">
+                                    <form class="deleteForm{{$product->id}}" style="margin-right: 10px;" action="{{ route('admin.product.destroy',$product->id) }}"  method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger del-product-btn" style="width:100px" data-id="{{ $product->id }}">
+                                        <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $product->id }}">
                                             <a href="javascript:;" class="d-block del-product-btn text-decoration-none text-white ">
                                                 <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
                                             </a>

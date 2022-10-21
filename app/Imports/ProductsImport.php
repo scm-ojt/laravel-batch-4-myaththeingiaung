@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\CategoryProduct;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,10 +16,7 @@ class ProductsImport implements ToCollection,WithHeadingRow
     {
         foreach ($rows as $row)
         {
-            info($row['username']);
             $user = User::where('name',$row['username'])->get();
-            $u = json_encode($user);
-            info($u);
 
             $product = new Product();
             $product->user_id = $user->pluck('id')['0'];

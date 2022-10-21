@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-3">
             <div class="card">
-                <img class="card-img-top" src="{{ asset('img/view1.jfif') }}" class="img-fluid" alt="Card image cap">
+                <img class="card-img-top" src="{{ asset('img/view.jpg') }}" class="img-fluid" alt="Card image cap">
                 <div class="card-body">
                     <img style="margin-top: -70px;" width="100px" height="100px" class="rounded-circle mb-4  mx-auto d-block" style="margin-right: 10px" src="{{ asset('img/users/'.Auth::user()->images[0]->name) }}" alt="">
                     <h3 class="text-center">{{ $user->name }}</h3>

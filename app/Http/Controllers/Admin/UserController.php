@@ -62,9 +62,10 @@ class UserController extends Controller
         $image = new Image();
         $file = $request['image'];
         $file_name = uniqid(time()).'_'.$file;
-        $file_path = public_path('img/users')."/$file_name";
+        $file_path = 'img/users'."/$file_name";
         $image->name = $file_name;
         $image->path = $file_path;
+        $file->move(public_path('img/users'), $file_path);
         $user->images()->save($image);
         Toastr::success('User Create Successfully!','SUCCESS');
 
@@ -94,16 +95,6 @@ class UserController extends Controller
     {
         $user = User::where('id',$id)->first();
 
-        // if(auth()->guard('admin')->user())
-        // {
-        //     return view('admin.profile.edit',compact('user'));           
-        // }elseif(auth()->user()->id != null){
-        //     if($user->id != auth()->user()->id){
-        //         abort(404);
-        //     }
-        //     abort(404); 
-        // }
-
         return view('admin.profile.edit',compact('user'));
     }
 
@@ -126,12 +117,16 @@ class UserController extends Controller
         $user->update();
 
         $image = Image::where('imagable_id',$id)->first();
-        $file = $request['image'];
-        $file_name = uniqid(time()).'_'.$file;
-        $file_path = public_path('img/users')."/$file_name";
-        $image->name = $file_name;
-        $image->path = $file_path;
-        $user->images()->save($image);
+        if(request()->hasFile('image')){
+            unlink(public_path('img/users/'.$image->name));
+            $file = request()->file('image');
+            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+            $file_path = 'img/users'."/$file_name";
+            $image->name = $file_name;
+            $image->path = $file_path;
+            $file->move(public_path('img/users'), $file_path);
+            $user->images()->save($image); 
+        }
         Toastr::success('User Update Successfully!','SUCCESS');
         
         return redirect()->route('admin.profile.index');
@@ -145,18 +140,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $image = Image::where('imagable_id',$id)->first();
         $user = User::findOrFail($id);
         $product = Product::where('user_id',$id);
         $user->delete();
+        $user->images()->delete();   
+        unlink(public_path('img/users/'.$image->name));
         $product->delete();
 
         Toastr::success('Account Delete Successfully!','SUCCESS');
         
         return redirect()->route('admin.profile.index');
-    }
-
-    public function storeImage($user){
-
     }
 
 }

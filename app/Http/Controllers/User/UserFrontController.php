@@ -35,16 +35,9 @@ class UserFrontController extends Controller
     public function edit($id)
     {
         $user = User::where('id',$id)->first();
-
-        // if(auth()->guard('admin')->user())
-        // {
-        //     return view('admin.profile.edit',compact('user'));           
-        // }elseif(auth()->user()->id != null){
-        //     if($user->id != auth()->user()->id){
-        //         abort(404);
-        //     }
-        //     abort(404); 
-        // }
+        if($user->id != auth()->user()->id){
+            abort(404);
+        }
 
         return view('user.profile.edit',compact('user'));
     }
@@ -92,14 +85,6 @@ class UserFrontController extends Controller
     {
         $user = User::findOrFail($id);
         $product = Product::where('user_id',$id);
-        // if(auth()->guard('admin')->user()){
-        //     $user->delete();
-        //     $product->delete();
-        //     return redirect()->route('admin.profile.index');
-        // }elseif($id == Auth::user()->id){
-        //     $user->delete();
-        //     $product->delete();
-        // }
         $user->delete();
         $product->delete();
 
@@ -108,8 +93,9 @@ class UserFrontController extends Controller
         return redirect()->route('home');
     }
 
-    public function storeImage($user){
-
+    public function userProduct(){
+        $products = Product::where('user_id', Auth::user()->id)->get();
+        return view('user.profile.index',compact('products'));
     }
 
 }

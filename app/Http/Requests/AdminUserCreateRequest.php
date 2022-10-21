@@ -28,7 +28,7 @@ class AdminUserCreateRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required','regex:/(09)\d{9}/'],
             'address' => ['required'],
-            'image' => ['required'],
+            'image' => ['required','mimes:jpeg,png,jpg,jfif'],
             'password' => ['required', 'string', 'min:5', 'confirmed'],
         ];
     }
