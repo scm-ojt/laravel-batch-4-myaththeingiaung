@@ -8,13 +8,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            @guest
-                            <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="rounded-circle border" alt="User Photo">
-                            @else
-                            {{-- @if($product->user_id == $users->images?->imagable_id)
-                            @endif --}}
-                            <img src="{{ asset('img/user.png') }}" class="rounded-circle border"  width="40px" height="40px" alt="User Image">
-                            @endguest
+                            @if($product->user_id == $product->user->id )
+                                @if($product->user->images()->exists())
+                                <img src="{{ asset($product->user->images[0]->path) }}" width="40px" height="40px" class="rounded-circle border" alt="User Photo">
+                                @else
+                                <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="rounded-circle border" alt="User Photo">
+                                @endif
+                            @endif
                             <h4 class="mt-2 ms-2">{{ $product->user->name }}</h4>
                         </div>
                         <hr>
@@ -60,3 +60,11 @@
     </div>
 </div>
 @endsection
+@push('js')
+    <!-- Sweet Alert 2 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/user.js') }}"></script>
+@endpush

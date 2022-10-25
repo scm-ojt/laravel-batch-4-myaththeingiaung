@@ -23,6 +23,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+   
     <!-- Sweet Alert 2 -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
@@ -30,6 +31,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
     <div id="app">
@@ -69,14 +71,16 @@
                                 <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product*') ? 'active' : '' }}">Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : '' }}">Profile</a>
+                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : '' }}">User Profile</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset('img/users/'.Auth::user()->images[0]->name) }}" alt="">{{ Auth::user()->name }}
+                                    @if(Auth::user()->images()->exists())
+                                    <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset(Auth::user()->images[0]->path) }}" alt="User Photo">
+                                    @else
+                                    <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset('img/user.png') }}" alt="User Photo">                                   
+                                    @endif
+                                    {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
                                     <a href="{{ route('profile.show', Auth::user()->id) }}" class="dropdown-item">profile</a>

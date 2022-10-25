@@ -53,8 +53,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'image' => ['required','mimes:jpeg,png,jpg,jfif'],
-            'phone' => ['required','regex:/(09)\d{9}/'],
+            'image' => ['mimes:jpeg,png,jpg,jfif'],
+            'phone' => ['required','regex:/(09)|(01)[0-9]{9}/'],
             'address' => ['required'],
             'password' => ['required', 'string', 'min:5', 'confirmed'],
         ]);
@@ -76,14 +76,16 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
         $user->save();
 
-        $image = new Image();
-        $file = request()->file('image');
-        $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-        $file_path = 'img/users'."/$file_name";
-        $image->name = $file_name;
-        $image->path = $file_path;
-        $file->move(public_path('img/users'), $file_path);
-        $user->images()->save($image);
+        if(request()->hasFile('image')){
+            $image = new Image();
+            $file = request()->file('image');
+            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+            $file_path = 'img/users'."/$file_name";
+            $image->name = $file_name;
+            $image->path = $file_path;
+            $file->move(public_path('img/users'), $file_path);
+            $user->images()->save($image);
+        }
         return $user;
 
         

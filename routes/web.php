@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\ProductFrontController;
 use App\Http\Controllers\User\UserFrontController;
-use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit/{id}',[UserFrontController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update/{id}',[UserFrontController::class, 'update'])->name('profile.update');    
 });
-
-
 
 
 Route::group(['middleware' => 'adminauth', 'prefix' => 'admin', 'as' => 'admin.'], function () {

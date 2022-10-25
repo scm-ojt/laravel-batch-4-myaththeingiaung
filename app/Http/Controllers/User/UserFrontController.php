@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\User;
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Image;
+use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\AdminUserUpdateRequest;
 
 class UserFrontController extends Controller
 {
@@ -21,9 +23,14 @@ class UserFrontController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::find($id);  
+        if($user->images()->exists()){
+            $image = $user->images[0]->path;  
+        }else{
+            $image = '';
+        }
 
-        return view('user.profile.show',compact('user'));
+        return view('user.profile.show',compact('user','image'));
     }
 
     /**
@@ -45,11 +52,11 @@ class UserFrontController extends Controller
     /**
      * To update user by id
      * 
-     * @param AdminUserUpdateRequest $request request with inputs
+     * @param UserUpdateRequest $request request with inputs
      * @param int $id user id
      * @return View profile index
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $user = User::where('id',$id)->first();
 
@@ -60,38 +67,33 @@ class UserFrontController extends Controller
         $user->password = $request['password'];
         $user->update();
 
-        $image = Image::where('imagable_id',$id)->first();
         if(request()->hasFile('image')){
-            unlink(public_path('img/users/'.$image->name));
-            $file = request()->file('image');
-            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-            $file_path = 'img/users'."/$file_name";
-            $image->name = $file_name;
-            $image->path = $file_path;
-            $file->move(public_path('img/users'), $file_path);
-            $user->images()->save($image); 
+            if(Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
+                $image = Image::where('imagable_id',$id)->first();
+                unlink(public_path('img/users/'.$image->name));     
+                $file = request()->file('image');
+                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+                $file_path = 'img/users'."/$file_name";
+                $image->name = $file_name;
+                $image->path = $file_path;
+                $file->move(public_path('img/users'), $file_path);
+                $user->images()->save($image);            
+            }else{
+                $image = new Image();
+                $file = request()->file('image');
+                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+                $file_path = 'img/users'."/$file_name";
+                $image->name = $file_name;
+                $image->path = $file_path;
+                $file->move(public_path('img/users'), $file_path);
+                $user->images()->save($image); 
+            }
         }
-        
-        return redirect()->route('home');
+        Toastr::success('Profile Update Successfully!','SUCCESS');
+
+        return redirect()->route('profile.show',compact('id'));
     }
 
-    /**
-     * To delete user by id
-     *
-     * @param  int  $id user id
-     * @return View profile index page 
-     */
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $product = Product::where('user_id',$id);
-        $user->delete();
-        $product->delete();
-
-        Toastr::success('Account Delete Successfully!','SUCCESS');
-        
-        return redirect()->route('home');
-    }
 
     public function userProduct(){
         $products = Product::where('user_id', Auth::user()->id)->get();

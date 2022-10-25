@@ -64,6 +64,7 @@ class ProductFrontController extends Controller
         $product->images()->save($image);
         
         Toastr::success('Product Create Successfully!','SUCCESS');
+        
         return redirect()->route('home');
     }
 
@@ -118,7 +119,7 @@ class ProductFrontController extends Controller
             $product->categories()->attach($category);
         }
 
-        $image = Image::where('imagable_id',$id)->first();
+        $image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\Product')->first();
         if(request()->hasFile('image')){
             unlink(public_path('img/products/'.$image->name));         
             $file = request()->file('image');

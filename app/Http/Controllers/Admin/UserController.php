@@ -58,15 +58,17 @@ class UserController extends Controller
         $user->address = $request['address'];
         $user->password = Hash::make($request['password']);
         $user->save();
-
-        $image = new Image();
-        $file = $request['image'];
-        $file_name = uniqid(time()).'_'.$file;
-        $file_path = 'img/users'."/$file_name";
-        $image->name = $file_name;
-        $image->path = $file_path;
-        $file->move(public_path('img/users'), $file_path);
-        $user->images()->save($image);
+        
+        if(request()->hasFile('image')){
+            $image = new Image();
+            $file = $request['image'];
+            $file_name = uniqid(time()).'_'.$file;
+            $file_path = 'img/users'."/$file_name";
+            $image->name = $file_name;
+            $image->path = $file_path;
+            $file->move(public_path('img/users'), $file_path);
+            $user->images()->save($image);
+        }
         Toastr::success('User Create Successfully!','SUCCESS');
 
         return redirect()->route('admin.profile.index')->withSuccess('You have signed-in');
@@ -105,7 +107,7 @@ class UserController extends Controller
      * @param int $id user id
      * @return View profile index
      */
-    public function update(Request $request, $id)
+    public function update(AdminUserUpdateRequest $request, $id)
     {
         $user = User::where('id',$id)->first();
 
@@ -116,21 +118,32 @@ class UserController extends Controller
         $user->password = $request['password'];
         $user->update();
 
-        $image = Image::where('imagable_id',$id)->first();
         if(request()->hasFile('image')){
-            unlink(public_path('img/users/'.$image->name));
-            $file = request()->file('image');
-            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-            $file_path = 'img/users'."/$file_name";
-            $image->name = $file_name;
-            $image->path = $file_path;
-            $file->move(public_path('img/users'), $file_path);
-            $user->images()->save($image); 
-        }
+            if(Image::where('imagable_id',$id)->first()){
+                $image = Image::where('imagable_id',$id)->first();
+                unlink(public_path('img/users/'.$image->name));     
+                $file = request()->file('image');
+                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+                $file_path = 'img/users'."/$file_name";
+                $image->name = $file_name;
+                $image->path = $file_path;
+                $file->move(public_path('img/users'), $file_path);
+                $user->images()->save($image);            
+            }else{
+                $image = new Image();
+                $file = request()->file('image');
+                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+                $file_path = 'img/users'."/$file_name";
+                $image->name = $file_name;
+                $image->path = $file_path;
+                $file->move(public_path('img/users'), $file_path);
+                $user->images()->save($image); 
+            }
         Toastr::success('User Update Successfully!','SUCCESS');
         
         return redirect()->route('admin.profile.index');
     }
+}    
 
     /**
      * To delete user by id
@@ -140,7 +153,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $image = Image::where('imagable_id',$id)->first();
+        $image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first();
         $user = User::findOrFail($id);
         $product = Product::where('user_id',$id);
         $user->delete();

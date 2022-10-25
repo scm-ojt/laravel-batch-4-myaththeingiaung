@@ -6,7 +6,11 @@
             <div class="card">
                 <img class="card-img-top" src="{{ asset('img/view.jpg') }}" class="img-fluid" alt="Card image cap">
                 <div class="card-body">
-                    <img style="margin-top: -70px;" width="100px" height="100px" class="rounded-circle mb-4  mx-auto d-block" style="margin-right: 10px" src="{{ asset('img/users/'.Auth::user()->images[0]->name) }}" alt="">
+                    @if($image == '')
+                    <img style="margin-top: -70px;" width="100px" height="100px" class="rounded-circle mb-4  mx-auto d-block" src="{{ asset('img/user.png') }}" style="margin-right: 10px" alt="User Photo">
+                    @else
+                    <img style="margin-top: -70px;" width="100px" height="100px" class="rounded-circle mb-4  mx-auto d-block" src="{{ asset($image) }}" style="margin-right: 10px" alt="User Photo">
+                    @endif
                     <h3 class="text-center">{{ $user->name }}</h3>
                     <p class="text-center">{{ $user->email }}</p>
                     <p class="text-center">{{ $user->phone }}</p>
@@ -21,3 +25,10 @@
     </div>
 </div>
 @endsection
+@push('js')
+    <!-- Sweet Alert 2 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush

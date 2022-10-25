@@ -31,6 +31,7 @@ class ProductController extends Controller
                     $join->on("products.user_id", "=", "users.id");
                 })->orwhere('users.name','LIKE','%'.$search.'%')
                 ->orwhere('products.title','LIKE','%'.$search.'%')->paginate(5); 
+                
             }elseif($request->has('export')){
                 $products = Product::join("users", function ($join) {
                     $join->on("products.user_id", "=", "users.id");
@@ -40,6 +41,7 @@ class ProductController extends Controller
             }else{
                 $products = Product::orderBy('id','desc')->paginate(5);
             }
+            
             return view('admin.product.index',compact('products','i','request'));
         }
     }
