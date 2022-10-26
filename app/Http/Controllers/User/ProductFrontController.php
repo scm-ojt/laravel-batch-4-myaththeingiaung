@@ -17,15 +17,10 @@ use App\Http\Requests\ProductUpdateRequest;
 class ProductFrontController extends Controller
 {
 
-    public function profile()
-    {
-        return view('user.product.index');
-    }
-
     /**
-     * Show the form for creating a new resource.
+     * Show product create form
      *
-     * @return \Illuminate\Http\Response
+     * @return View product create page
      */
     public function create()
     {
@@ -35,10 +30,10 @@ class ProductFrontController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * To store product information
+     * 
+     * @param ProductRequest $request request with inputs
+     * @return View home page
      */
     public function store(ProductRequest $request)
     {
@@ -69,23 +64,28 @@ class ProductFrontController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * To show product detail information
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id product id
+     * @return $product Product Object
      */
     public function show($id)
     {
         $product = Product::find($id);
+        if($product->user->images()->exists()){
+            $image = $product->user->images[0]->path;  
+        }else{
+            $image = '';
+        }
         
-        return view('user.product.show',compact('product'));
+        return view('user.product.show',compact('product','image'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * To store old value in edit page
+     * 
+     * @param int $id product id
+     * @return View profile edit page
      */
     public function edit(Request $request,$id)
     {
@@ -94,16 +94,17 @@ class ProductFrontController extends Controller
             $categories = Category::all();
             return view('user.product.edit',compact('product','categories'));
         }else{
-            abort(403);
+            return redirect()->back();
         }
     }
 
-     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    /**
+     * To update product by id
+     * 
+     * @param ProductUpdateRequest $request request with inputs
+     * @param int $id product id
+     * @return View home
+     */ 
     public function update(ProductUpdateRequest $request, $id)
     {
         $product = Product::find($id); 
@@ -136,10 +137,10 @@ class ProductFrontController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * To delete product by id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id product id
+     * @return View home
      */
     public function destroy($id)
     {

@@ -25,7 +25,7 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'price' => 'required|regex:/^\d*/',
+            'price' => 'required|regex:/[0-9]/|min:3|max:10',
             'category-names' => 'required',
             'description' => 'required',
         ];

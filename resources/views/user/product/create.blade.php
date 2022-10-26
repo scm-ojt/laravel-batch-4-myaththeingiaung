@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card mt-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div><h4>Product Create</h4></div>
-                    <a href="{{ route('home') }}" class="btn btn-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <div><h4 class="mb-0">Product Create</h4></div>
+                    <a href="{{ route('home') }}" class="btn btn-outline-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
@@ -15,7 +15,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input id="phone" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autocomplete="title">
+                            <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autocomplete="title">
                             @error('title')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
-                            <textarea name="description" class="w-100" id="" cols="" rows="4">{{ @old('description') }}</textarea>
+                            <textarea name="description" class="w-100 form-control" id="" cols="" rows="4">{{ @old('description') }}</textarea>
                             @error('description')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>

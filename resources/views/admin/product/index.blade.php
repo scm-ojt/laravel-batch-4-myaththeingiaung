@@ -50,7 +50,7 @@
                         @else
                             @foreach($products as $product)
                             <tr style="vertical-align: middle;">
-                            <td>{{ ++$i }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>                               
                                 {{ $product->user?->name }}
                             </td>

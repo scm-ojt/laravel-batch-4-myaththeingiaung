@@ -35,7 +35,7 @@ class ProductsExport implements WithHeadings,FromCollection,WithMapping
             $product->title,
             $product->description,
             $product->price,
-            $product->categories()->implode('name',','),
+            $product->categories()->implode('name',','),                               
         ];
     }
 

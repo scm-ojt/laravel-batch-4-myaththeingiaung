@@ -5,12 +5,10 @@ namespace App\Http\Controllers\User;
 use App\Models\User;
 use App\Models\Image;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserUpdateRequest;
-use App\Http\Requests\AdminUserUpdateRequest;
 
 class UserFrontController extends Controller
 {
@@ -68,8 +66,7 @@ class UserFrontController extends Controller
         $user->update();
 
         if(request()->hasFile('image')){
-            if(Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
-                $image = Image::where('imagable_id',$id)->first();
+            if($image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
                 unlink(public_path('img/users/'.$image->name));     
                 $file = request()->file('image');
                 $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
@@ -94,9 +91,14 @@ class UserFrontController extends Controller
         return redirect()->route('profile.show',compact('id'));
     }
 
-
+    /**
+     * To show user product page
+     * 
+     * @return View user product profile page
+     */
     public function userProduct(){
         $products = Product::where('user_id', Auth::user()->id)->get();
+        
         return view('user.profile.index',compact('products'));
     }
 

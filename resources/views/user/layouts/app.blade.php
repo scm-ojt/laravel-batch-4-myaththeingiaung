@@ -32,12 +32,13 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/user.css') }}">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar position-fixed w-100 top-0 navbar-expand-md navbar-light bg-white shadow-sm" style="z-index: 5">
+        <nav class="navbar position-fixed w-100 top-0 navbar-expand-md navbar-dark bg-primary shadow-sm" style="z-index: 5">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="h1 navbar-brand" style="font-size:25px;font-weight:bolder;" href="{{ url('/') }}">
                     Blog
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -71,19 +72,22 @@
                                 <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('profile') ? 'active' : '' }}">User Profile</a>
+                                <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product/create') ? 'active' : '' }}">Product Create</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('user/profile') ? 'active' : '' }}">User Profile</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle {{ Request::is('profile*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     @if(Auth::user()->images()->exists())
-                                    <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset(Auth::user()->images[0]->path) }}" alt="User Photo">
+                                    <img width="40px" height="40px" class=" user-profile-img rounded-circle" style="margin-right: 10px" src="{{ asset(Auth::user()->images[0]->path) }}" alt="User Photo">
                                     @else
-                                    <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset('img/user.png') }}" alt="User Photo">                                   
+                                    <img width="40px" height="40px" class="user-profile-img rounded-circle" style="margin-right: 10px" src="{{ asset('img/user.png') }}" alt="User Photo">                                   
                                     @endif
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="dropdown-item">profile</a>
+                                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="dropdown-item {{ Request::is('profile/show*') ? 'active' : '' }}">profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

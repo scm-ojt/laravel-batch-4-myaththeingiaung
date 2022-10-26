@@ -1,6 +1,7 @@
 @extends('user.layouts.app')
 
 @section('content')
+<div class='top'></div>
 <div class="container" style="margin-top: 70px">
     <div class="row mb-4 justify-content-center">
         <div class="col-md-9">
@@ -57,15 +58,29 @@
         @endforeach
         
     </div>
-    {{-- <div class="arrow" style="font-size: 30px">
-        <i class="fa-solid fa-arrow-up-long"></i>
-    </div> --}}
-</div>
+    <div class='scrolltop'>
+        <div class='scroll icon bounce'>
+            <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+        </div>
+    </div>
 @endsection
 @push('js')
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!-- Sweet Alert 2 -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
     {!! Toastr::message() !!}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50 ) {
+                $('.scrolltop:hidden').stop(true, true).fadeIn();
+            } else {
+                $('.scrolltop').stop(true, true).fadeOut();
+            }
+        });
+    $(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".top").offset().top},"1000");return false})})
+    </script>
 @endpush

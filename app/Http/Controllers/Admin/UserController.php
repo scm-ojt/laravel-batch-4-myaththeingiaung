@@ -109,18 +109,17 @@ class UserController extends Controller
      */
     public function update(AdminUserUpdateRequest $request, $id)
     {
+        
         $user = User::where('id',$id)->first();
 
         $user->name = $request['name'];
         $user->email = $request['email'];
         $user->phone = $request['phone'];
         $user->address = $request['address'];
-        $user->password = $request['password'];
         $user->update();
 
         if(request()->hasFile('image')){
-            if(Image::where('imagable_id',$id)->first()){
-                $image = Image::where('imagable_id',$id)->first();
+            if($image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
                 unlink(public_path('img/users/'.$image->name));     
                 $file = request()->file('image');
                 $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
@@ -139,10 +138,10 @@ class UserController extends Controller
                 $file->move(public_path('img/users'), $file_path);
                 $user->images()->save($image); 
             }
+        }
         Toastr::success('User Update Successfully!','SUCCESS');
         
         return redirect()->route('admin.profile.index');
-    }
 }    
 
     /**

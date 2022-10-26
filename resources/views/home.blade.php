@@ -5,14 +5,14 @@
     <div class="row">
         @foreach ($products as $product)
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card hover-shadow">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             @if($product->user_id == $product->user->id )
                                 @if($product->user->images()->exists())
-                                <img src="{{ asset($product->user->images[0]->path) }}" width="40px" height="40px" class="rounded-circle border" alt="User Photo">
+                                <img src="{{ asset($product->user->images[0]->path) }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
                                 @else
-                                <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="rounded-circle border" alt="User Photo">
+                                <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
                                 @endif
                             @endif
                             <h4 class="mt-2 ms-2">{{ $product->user->name }}</h4>
@@ -28,7 +28,7 @@
                                 <img src="{{ asset('img/products/'.$image?->name) }}" class="mb-4 rounded"  width="382px" height="300px" alt="Product Image">
                             @endforeach
                         @endif 
-                        <p class="text-black-50 mb-4">{{ Str::words($product->description, 13) }}</p>
+                        <p class="text-black-50 mb-4" style="height: 50px">{{ Str::words($product->description, 13) }}</p>
                         <div class="d-flex justify-content-between">
                             @guest
                                 <a href="{{ route('product.show',$product->id) }}" class="btn btn-primary ml-auto"><i class="fa-solid fa-circle-info" style="margin-right: 10px"></i>See More</a>

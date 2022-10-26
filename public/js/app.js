@@ -1,9 +1,11 @@
 let input = document.getElementById('title');
-let btn = document.getElementById('search');
+let search = document.getElementById('search');
 search.disabled = true;
-input.addEventListener('focus',function(){
-    search.disabled = false;
+input.addEventListener('keyup',function(){
+    if(input.value.length > 0){
+        search.disabled = false;
+    }else{
+        search.disabled = true;
+    }
 });
-if(input.value.length > 0){
-    search.disabled = false;
-}
+

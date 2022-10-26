@@ -1,0 +1,83 @@
+.nav-link.active {
+    text-decoration: underline;
+	text-decoration-color: white;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 7px;
+}
+
+.nav-link{
+    color: white !important;
+    font-size: 16px;
+}
+
+.user-profile-img {
+    border: 1px solid #998f8f;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
+
+.home-profile-img {
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+    border: 1px solid #a59797 !important;
+}
+
+.scrolltop .icon {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 50%;
+}
+
+.scrolltop {
+    position: fixed;
+    bottom: 70px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: none;
+}
+
+i.fa-solid.fa-arrow-up {
+    color: blue;
+    font-size: 1.5em;
+}
+
+.bounce {
+    display: inline-block;
+    position: relative;
+    -moz-animation: bounce 0.5s infinite linear;
+    -o-animation: bounce 0.5s infinite linear;
+    -webkit-animation: bounce 0.5s infinite linear;
+    animation: bounce 0.5s infinite linear;
+}
+
+@-webkit-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-moz-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-o-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-ms-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}

@@ -21,7 +21,11 @@
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex align-items-center mb-4">
-                            <img src="{{ asset('dist/img/user1-128x128.jpg') }}" alt="" width="60px" class="img-circle elevation-2 mr-3">
+                            @if($product->user->images()->exists())
+                            <img src="{{ asset($product->user->images[0]->path) }}" alt="" width="60px" height="60px" class="img-circle elevation-2 mr-3">
+                            @else
+                            <img src="{{ asset('dist/img/user1-128x128.jpg') }}" alt="" width="60px" height="60px" class="img-circle elevation-2 mr-3">
+                            @endif
                             <h2>{{ $product->user->name }}</h2>
                         </div>
                         <h3 class="mb-3 d-block">{{ $product->title }}</h3>

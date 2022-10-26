@@ -25,24 +25,32 @@ class ProductController extends Controller
     {
         if($request->isMethod('get')){
             $search = $request->input('title');
-            $i = ($request->input('page', 1) - 1) * 5;
+            // $i = ($request->input('page', 1) - 1) * 5;
+            
             if($request->has('search')){
-                $products = Product::join("users", function ($join) {
-                    $join->on("products.user_id", "=", "users.id");
-                })->orwhere('users.name','LIKE','%'.$search.'%')
-                ->orwhere('products.title','LIKE','%'.$search.'%')->paginate(5); 
+                $products = Product::with('categories')->with('user')
+                ->whereHas('user', function($q) use($search){
+                    if($search){
+                        $q->where('name', 'like', '%'.$search.'%');
+                    }
+                })->orwhere('title','LIKE','%'.$search.'%')
+                ->paginate(5);
                 
             }elseif($request->has('export')){
-                $products = Product::join("users", function ($join) {
-                    $join->on("products.user_id", "=", "users.id");
-                })->orwhere('users.name','LIKE','%'.$search.'%')
-                ->orwhere('products.title','LIKE','%'.$search.'%')->get();
-                return Excel::download(new ProductsExport($products) , 'product'.uniqid(time()).'.xlsx');
+                $products = Product::with('categories')->with('user')
+                ->whereHas('user', function($q) use($search){
+                    if($search){
+                        $q->where('name', 'like', '%'.$search.'%');
+                    }
+                })->orwhere('title','LIKE','%'.$search.'%')
+                ->get();
+                
+                return Excel::download(new ProductsExport($products) , 'product'.uniqid(time()).'.csv');
             }else{
-                $products = Product::orderBy('id','desc')->paginate(5);
+                $products = Product::orderBy('id','desc')->paginate(2);
             }
             
-            return view('admin.product.index',compact('products','i','request'));
+            return view('admin.product.index',compact('products','request'));
         }
     }
 
