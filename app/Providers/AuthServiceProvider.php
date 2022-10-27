@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id == $product->user_id;
         });
         Gate::define('show-btn', function (User $user) {
-            return Auth::user()->id == $user->id;
+            return Auth::id() == $user->id;
         });
     }
 }

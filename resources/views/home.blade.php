@@ -1,21 +1,34 @@
 @extends('user.layouts.app')
 
+@section('title') Blog | Home @endsection
 @section('content')
 <div class="container" style="margin-top: 80px">
+    @if($products->count() > 0)
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <form class="search-form">
+                    <input type="text" id="title" placeholder="Search..." value="{{ $request->title }}" name="title" class="textbox">
+                    <input title="Search" name="search" value="" id="search" type="submit" class="button">
+                </form>
+            </div>
+        </div>
+    @endif
     <div class="row">
         @foreach ($products as $product)
             <div class="col-md-4 mb-4">
                 <div class="card hover-shadow">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            @if($product->user_id == $product->user->id )
-                                @if($product->user->images()->exists())
-                                <img src="{{ asset($product->user->images[0]->path) }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
-                                @else
-                                <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
+                        <div class="">
+                            <a href="{{ route('profile.show',$product->user_id) }}" class="d-flex align-items-center text-decoration-none text-black">
+                                @if($product->user_id == $product->user->id )
+                                    @if($product->user->images()->exists())
+                                    <img src="{{ asset($product->user->images[0]->path) }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
+                                    @else
+                                    <img src="{{ asset('img/user.png') }}" width="40px" height="40px" class="home-profile-img rounded-circle border" alt="User Photo">
+                                    @endif
                                 @endif
-                            @endif
-                            <h4 class="mt-2 ms-2">{{ $product->user->name }}</h4>
+                                <h4 class="mt-2 ms-2">{{ $product->user->name }}</h4>
+                            </a>
                         </div>
                         <hr>
                         <h3>{{ $product->title }}</h3>
@@ -67,4 +80,5 @@
     {!! Toastr::message() !!}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/user.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 @endpush

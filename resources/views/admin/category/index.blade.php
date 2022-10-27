@@ -1,4 +1,5 @@
 @extends('admin.layouts.adminlte')
+@section('title') Blog | Category List @endsection
 @section('content')
 <div class="container">
     <div class="row">
@@ -26,36 +27,34 @@
                           </tr>
                         </thead>
                         <tbody>
-                        @if($categories->count() <= 0)
-                        <tr>
-                            <td class="text-center" colspan="7">There is no record</td>
-                        </tr>
-                        @else
-                            @foreach($categories as $category)
-                            <tr style="vertical-align: middle;">
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $category['name'] }}</td>
-                                <td>{{ $category['created_at'] }}</td>
-                                <td>{{ $category['updated_at'] }}</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <form class="deleteForm{{ $category->id }}" style="margin-right: 10px;" action="{{ route('admin.category.destroy',$category->id) }}"  method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $category->id }}">
-                                              <a href="javascript:;" class="d-block del-user-btn text-decoration-none text-white ">
-                                                  <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
-                                              </a>
-                                          </button>
-                                        </form>
-                                        <div class="col2">
-                                        <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('admin.category.edit',$category->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
-                                        </div>
+                        @forelse ($categories as $category)
+                        <tr style="vertical-align: middle;">
+                          <td>{{ $request->page? (request()->page - 1) * 10 + $loop->iteration : $loop->iteration }}</td>
+                            <td>{{ $category['name'] }}</td>
+                            <td>{{ $category['created_at'] }}</td>
+                            <td>{{ $category['updated_at'] }}</td>
+                            <td>
+                                <div class="d-flex">
+                                    <form class="deleteForm{{ $category->id }}" style="margin-right: 10px;" action="{{ route('admin.category.destroy',$category->id) }}"  method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $category->id }}">
+                                          <a href="javascript:;" class="d-block del-user-btn text-decoration-none text-white ">
+                                              <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
+                                          </a>
+                                      </button>
+                                    </form>
+                                    <div class="col2">
+                                    <a class="btn btn-secondary d-block text-decoration-none text-white" href="{{ route('admin.category.edit',$category->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                     </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @endif
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                          <tr>
+                            <td class="text-center" colspan="7">There is no record</td>
+                          </tr>
+                        @endforelse
                         </tbody>
                       </table>
                       {{ $categories->appends(request()->input())->links() }}

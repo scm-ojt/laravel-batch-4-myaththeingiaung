@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Mail\ProductDeleteMail;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ProductRequest;
@@ -38,7 +39,7 @@ class ProductFrontController extends Controller
     public function store(ProductRequest $request)
     {
         $product = new Product();
-        $product->user_id = auth()->user()->id;
+        $product->user_id = Auth::id();
         $product->title = $request['title'];
         $product->price = $request['price'];
         $product->description = $request['description'];
@@ -51,11 +52,12 @@ class ProductFrontController extends Controller
 
         $image = new Image();
         $file = request()->file('image');
-        $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-        $file_path = 'img/products'."/$file_name";
-        $image->name = $file_name;
-        $image->path = $file_path;
-        $file->move(public_path('img/products'), $file_path);
+        
+        $fileName = uniqid(time()) . '_' . $file->getClientOriginalName();
+        $image->name = $fileName;
+        $image->path = 'img/products/'.$fileName;
+
+        $file->move(public_path('img/products'), 'img/products/'.$fileName);
         $product->images()->save($image);
         
         Toastr::success('Product Create Successfully!','SUCCESS');
@@ -69,9 +71,8 @@ class ProductFrontController extends Controller
      * @param  int  $id product id
      * @return $product Product Object
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
         if($product->user->images()->exists()){
             $image = $product->user->images[0]->path;  
         }else{
@@ -87,9 +88,8 @@ class ProductFrontController extends Controller
      * @param int $id product id
      * @return View profile edit page
      */
-    public function edit(Request $request,$id)
+    public function edit(Request $request,Product $product)
     {
-        $product = Product::find($id);
         if (Gate::allows('update-product', $product)) {
             $categories = Category::all();
             return view('user.product.edit',compact('product','categories'));
@@ -105,10 +105,9 @@ class ProductFrontController extends Controller
      * @param int $id product id
      * @return View home
      */ 
-    public function update(ProductUpdateRequest $request, $id)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        $product = Product::find($id); 
-        $product->user_id = auth()->user()->id;
+        $product->user_id = Auth::id();
         $product->title = $request['title'];
         $product->price = $request['price'];
         $product->description = $request['description'];
@@ -120,16 +119,23 @@ class ProductFrontController extends Controller
             $product->categories()->attach($category);
         }
 
-        $image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\Product')->first();
         if(request()->hasFile('image')){
-            unlink(public_path('img/products/'.$image->name));         
             $file = request()->file('image');
-            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-            $file_path = 'img/products'."/$file_name";
-            $image->name = $file_name;
-            $image->path = $file_path;
-            $file->move(public_path('img/products'), $file_path);
-            $product->images()->save($image);
+            $fileName = uniqid(time()) . '_' . $file->getClientOriginalName();
+
+            if($image = Image::where('imagable_id',$product->id)->where('imagable_type','App\Models\Product')->first())
+            {
+                unlink(public_path('img/products/'.$image->name));
+                $image->name =  $fileName;
+                $image->path = 'img/products/'.$fileName;                       
+            }else
+            {
+                $image = new Image();
+                $image->name = $fileName;~
+                $image->path = 'img/products/'.$fileName;
+            }
+            $file->move(public_path('img/products'), 'img/products/'.$fileName);
+            $product->images()->save($image); 
         }
         Toastr::success('Product Update Successfully!','SUCCESS');
 
@@ -142,16 +148,15 @@ class ProductFrontController extends Controller
      * @param  int  $id product id
      * @return View home
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
         $email = $product->user->email;
-        if($product){
-            unlink(public_path('img/products/').$product->images[0]->name);
-            $product->categories()->detach();
-            $product->images()->delete();  
-            $product->delete();
+        if($product->images()->exitsts()){
+            unlink(public_path('img/products/').$product->images[0]->name);          
+            $product->images()->delete();             
         }
+        $product->categories()->detach();
+        $product->delete();
 
         Mail::to($email)->send(new ProductDeleteMail($product));
         Toastr::success('Product Delete Successfully!','SUCCESS');

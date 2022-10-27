@@ -1,4 +1,5 @@
 @extends('admin.layouts.adminlte')
+@section('title') Blog | User List @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -20,6 +21,7 @@
                           <tr>
                             <th scope="col">No</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Address</th>
@@ -28,38 +30,37 @@
                           </tr>
                         </thead>
                         <tbody>
-                          @if($users->count() <= 0)
+                          @forelse ($users as $user)
+                          <tr class="user-row">
+                            <td style="vertical-align: middle">{{ $request->page? (request()->page - 1) * 10 + $loop->iteration : $loop->iteration }}</td>
+                            <td style="vertical-align: middle">{{ $user['name'] }}</td>
+                            <td><img width="100px" class="rounded border" height="100px" src="{{ '../img/users/'.$user->images[0]->name }}" alt="{{ $user->name }}"></td>
+                            <td style="vertical-align: middle">{{ $user['email'] }}</td>
+                            <td style="vertical-align: middle">{{ $user['phone'] }}</td>
+                            <td style="vertical-align: middle">{{ $user['address'] }}</td>
+                            <td style="vertical-align: middle">{{ $user['updated_at'] }}</td>
+                            <td style="vertical-align: middle">
+                              <div class="d-flex">
+                                  <form class="deleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('admin.profile.destroy',$user->id) }}"  method="post">
+                                      @csrf
+                                      @method('delete')
+                                      <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $user->id }}">
+                                        <a href="javascript:;" class="d-block del-user-btn text-decoration-none text-white ">
+                                            <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
+                                        </a>
+                                    </button>
+                                  </form>
+                                  <div class="col2">
+                                    <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                                  </div>
+                              </div>
+                            </td>
+                          </tr>
+                          @empty
                             <tr>
-                                <td class="text-center" colspan="7">There is no record</td>
+                              <td class="text-center" colspan="7">There is no record</td>
                             </tr>
-                          @else
-                            @foreach($users as $user)
-                            <tr style="vertical-align: middle;">
-                              <td>{{ ++$i }}</td>
-                              <td>{{ $user['name'] }}</td>
-                              <td>{{ $user['email'] }}</td>
-                              <td>{{ $user['phone'] }}</td>
-                              <td>{{ $user['address'] }}</td>
-                              <td>{{ $user['updated_at'] }}</td>
-                              <td>
-                                <div class="d-flex">
-                                    <form class="userDeleteForm{{$user->id}}" style="margin-right: 10px;" action="{{ route('admin.profile.destroy',$user->id) }}"  method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger del-user-btn" style="width:100px" data-id="{{ $user->id }}">
-                                          <a href="javascript:;" class="d-block del-user-btn text-decoration-none text-white ">
-                                              <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
-                                          </a>
-                                      </button>
-                                    </form>
-                                    <div class="col2">
-                                      <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px" href="{{ route('admin.profile.edit',$user->id) }}"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
-                                    </div>
-                                </div>
-                              </td>
-                            </tr>
-                            @endforeach
-                        @endif
+                          @endforelse
                         </tbody>
                       </table>
                       {{ $users->appends(request()->input())->links() }}
@@ -70,4 +71,5 @@
 
 </div>
 @endsection
+
 

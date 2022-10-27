@@ -1,4 +1,5 @@
 @extends('user.layouts.app')
+@section('title') Blog | Profile @endsection
 @section('content')
 <div class="container" style="margin-top: 80px">
     <div class="row justify-content-center">
@@ -17,7 +18,11 @@
                     <p class="text-center text-black-50">{{ $user->address }}</p>
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('home') }}" class="btn btn-primary"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
-                        <a href="{{ route('profile.edit',$user->id) }}" class="btn btn-secondary"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
+                        @if (Auth::id() == $user->id)
+                            <a href="{{ route('profile.edit',$user->id) }}" class="btn btn-secondary"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>   
+                        @else
+                            <a href="{{ route('profile.index',$user->id) }}" class="btn btn-secondary"><i class="fa-solid fa-circle-info" style="margin-right: 10px"></i>Details</a>   
+                        @endif
                     </div>
                 </div>
             </div>

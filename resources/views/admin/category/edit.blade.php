@@ -1,4 +1,5 @@
 @extends('admin.layouts.adminlte')
+@section('title') Blog | Category Edit @endsection
 @section('content')
 <div class="container">
     <div class="row">

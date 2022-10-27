@@ -1,5 +1,6 @@
 @extends('user.layouts.app')
 
+@section('title') Blog | Product Edit @endsection
 @section('content')
 <div class="container" style="margin-top: 80px">
     <div class="row">

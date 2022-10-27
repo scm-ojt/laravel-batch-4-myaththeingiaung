@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title') Product Details @endsection
+@section('title')Blog | Product Details @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

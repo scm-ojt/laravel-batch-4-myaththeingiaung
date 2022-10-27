@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="shortcut icon" href="{{ asset('img/logo.jpg') }}">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Blog</title>
+    <title>@yield('title')</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -48,6 +48,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-center">
@@ -75,7 +76,7 @@
                                 <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product/create') ? 'active' : '' }}">Product Create</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link {{ Request::is('user/profile') ? 'active' : '' }}">User Profile</a>
+                                <a href="{{ route('profile.index',Auth::id()) }}" class="nav-link {{ Request::is('user/profile*') ? 'active' : '' }}">User Profile</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle {{ Request::is('profile*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -87,7 +88,7 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    <a href="{{ route('profile.show', Auth::user()->id) }}" class="dropdown-item {{ Request::is('profile/show*') ? 'active' : '' }}">profile</a>
+                                    <a href="{{ route('profile.show', Auth::id()) }}" class="dropdown-item {{ Request::is('profile/show*') ? 'active' : '' }}">profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

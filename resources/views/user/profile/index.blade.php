@@ -1,5 +1,6 @@
 @extends('user.layouts.app')
 
+@section('title') Blog | User Profile @endsection
 @section('content')
 <div class='top'></div>
 <div class="container" style="margin-top: 70px">
@@ -8,12 +9,12 @@
             <div class="card">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div class="align-items-center">
-                        @if(Auth::user()->images()->exists())
-                        <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset(Auth::user()->images[0]->path) }}" alt="User Photo">
+                        @if($user[0]->images[0]->name != null)
+                        <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset($user[0]->images[0]->path) }}" alt="User Photo">
                         @else
                         <img width="40px" height="40px" class="rounded-circle" style="margin-right: 10px" src="{{ asset('img/user.png') }}" alt="User Photo">                                   
                         @endif
-                        <span class="mb-0" style="font-size: 22px;font-weight:600;">{{ Auth::user()->name }}</span>
+                        <span class="mb-0" style="font-size: 22px;font-weight:600;">{{ $user[0]->name }}</span>
                     </div>
                   <a href="{{ route('product.create') }}" class="btn btn-primary ml-auto d-block text-white text-decoration-none"><i class="fa-solid fa-plus" style="margin-right: 10px"></i>Create</a>
                 </div>
@@ -30,7 +31,7 @@
                             <div class="align-items-start">
                                 <h3>{{ $product->title }}</h3>
                                 <p class="" style="font-weight: bolder">$ {{ $product->price }}</p>
-                                <p class="text-black-50 mb-4">{{ $product->description }}</p>
+                                <p class="text-black-50 mb-4" style="height: 60px">{{ Str::words($product->description, 13) }}</p>
                             </div>
                             <div class="d-flex align-items-end">
                                 <a href="{{ route('product.show',$product->id) }}" style="margin-right: 5px;" class="btn btn-primary ml-auto"><i class="fa-solid fa-circle-info" style="margin-right:3px"></i>See More</a>

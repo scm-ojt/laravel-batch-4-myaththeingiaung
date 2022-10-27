@@ -19,9 +19,8 @@ class UserFrontController extends Controller
      * @param  int  $id user id
      * @return View details page
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::find($id);  
         if($user->images()->exists()){
             $image = $user->images[0]->path;  
         }else{
@@ -37,10 +36,9 @@ class UserFrontController extends Controller
      * @param int $id product id
      * @return View profile edit page
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::where('id',$id)->first();
-        if($user->id != auth()->user()->id){
+        if($user->id != Auth::id()){
             abort(404);
         }
 
@@ -54,41 +52,33 @@ class UserFrontController extends Controller
      * @param int $id user id
      * @return View profile index
      */
-    public function update(UserUpdateRequest $request, $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        $user = User::where('id',$id)->first();
-
         $user->name = $request['name'];
         $user->email = $request['email'];
         $user->phone = $request['phone'];
         $user->address = $request['address'];
-        $user->password = $request['password'];
         $user->update();
 
         if(request()->hasFile('image')){
-            if($image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
+            $file = request()->file('image');
+            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+            if($image = Image::where('imagable_id',$user->id)->where('imagable_type','App\Models\User')->first()){
                 unlink(public_path('img/users/'.$image->name));     
-                $file = request()->file('image');
-                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
                 $file_path = 'img/users'."/$file_name";
                 $image->name = $file_name;
-                $image->path = $file_path;
-                $file->move(public_path('img/users'), $file_path);
-                $user->images()->save($image);            
+                $image->path = 'img/users'."/$file_name";           
             }else{
                 $image = new Image();
-                $file = request()->file('image');
-                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-                $file_path = 'img/users'."/$file_name";
                 $image->name = $file_name;
-                $image->path = $file_path;
-                $file->move(public_path('img/users'), $file_path);
-                $user->images()->save($image); 
+                $image->path = 'img/users'."/$file_name";
             }
+            $file->move(public_path('img/users'), 'img/users'."/$file_name");
+            $user->images()->save($image); 
         }
         Toastr::success('Profile Update Successfully!','SUCCESS');
 
-        return redirect()->route('profile.show',compact('id'));
+        return redirect()->route('profile.show',compact('user'));
     }
 
     /**
@@ -96,10 +86,12 @@ class UserFrontController extends Controller
      * 
      * @return View user product profile page
      */
-    public function userProduct(){
-        $products = Product::where('user_id', Auth::user()->id)->get();
+    public function userProduct(User $user)
+    {
+        $products = Product::where('user_id', $user->id)->get();
+        $user = User::with('images')->where('id',$user->id)->get();
         
-        return view('user.profile.index',compact('products'));
+        return view('user.profile.index',compact('products','user'));
     }
 
 }

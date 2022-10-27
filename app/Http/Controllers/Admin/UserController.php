@@ -23,13 +23,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if($request['name']!= null){
-            $users = User::where('name','LIKE','%'.$request->name.'%')->paginate(5);               
+            $users = User::where('name','LIKE','%'.$request->name.'%')->paginate(10);               
         }else{
-            $users = User::orderBy('id','desc')->paginate(5);
+            $users = User::orderBy('id','desc')->paginate(10);
         }
-        $i = ($request->input('page', 1) - 1) * 5;
         
-        return view('admin.profile.index',compact('users','i','request'));
+        return view('admin.profile.index',compact('users','request'));
     }
 
     /**
@@ -62,7 +61,7 @@ class UserController extends Controller
         if(request()->hasFile('image')){
             $image = new Image();
             $file = $request['image'];
-            $file_name = uniqid(time()).'_'.$file;
+            $file_name = uniqid(time()).'_'.$file->getClientOriginalName();
             $file_path = 'img/users'."/$file_name";
             $image->name = $file_name;
             $image->path = $file_path;
@@ -80,10 +79,8 @@ class UserController extends Controller
      * @param  int  $id user id
      * @return View details page
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::find($id);
-
         return view('admin.profile.show',compact('user'));
     }
 
@@ -93,10 +90,8 @@ class UserController extends Controller
      * @param int $id product id
      * @return View profile edit page
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::where('id',$id)->first();
-
         return view('admin.profile.edit',compact('user'));
     }
 
@@ -107,11 +102,8 @@ class UserController extends Controller
      * @param int $id user id
      * @return View profile index
      */
-    public function update(AdminUserUpdateRequest $request, $id)
+    public function update(AdminUserUpdateRequest $request, User $user)
     {
-        
-        $user = User::where('id',$id)->first();
-
         $user->name = $request['name'];
         $user->email = $request['email'];
         $user->phone = $request['phone'];
@@ -119,25 +111,21 @@ class UserController extends Controller
         $user->update();
 
         if(request()->hasFile('image')){
-            if($image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first()){
+            $file = request()->file('image');
+            $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
+            if($image = Image::where('imagable_id',$user->id)->where('imagable_type','App\Models\User')->first())
+            {
                 unlink(public_path('img/users/'.$image->name));     
-                $file = request()->file('image');
-                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-                $file_path = 'img/users'."/$file_name";
                 $image->name = $file_name;
-                $image->path = $file_path;
-                $file->move(public_path('img/users'), $file_path);
-                $user->images()->save($image);            
+                $image->path = 'img/users'."/$file_name";
+                        
             }else{
                 $image = new Image();
-                $file = request()->file('image');
-                $file_name = uniqid(time()) . '_' . $file->getClientOriginalName();
-                $file_path = 'img/users'."/$file_name";
                 $image->name = $file_name;
-                $image->path = $file_path;
-                $file->move(public_path('img/users'), $file_path);
-                $user->images()->save($image); 
+                $image->path = 'img/users'."/$file_name";
             }
+            $file->move(public_path('img/users'), 'img/users'."/$file_name");
+            $user->images()->save($image);    
         }
         Toastr::success('User Update Successfully!','SUCCESS');
         
@@ -150,11 +138,10 @@ class UserController extends Controller
      * @param  int  $id user id
      * @return View profile index page 
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $image = Image::where('imagable_id',$id)->where('imagable_type','App\Models\User')->first();
-        $user = User::findOrFail($id);
-        $product = Product::where('user_id',$id);
+        $image = Image::where('imagable_id',$user->id)->where('imagable_type','App\Models\User')->first();
+        $product = Product::where('user_id',$user->id);
         $user->delete();
         $user->images()->delete();   
         unlink(public_path('img/users/'.$image->name));

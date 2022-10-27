@@ -1,4 +1,5 @@
 @extends('admin.layouts.adminlte')
+@section('title') Blog | Product List @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -43,44 +44,42 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @if($products->count() <= 0)
+                        @forelse ($products as $product)
+                            <tr style="vertical-align: middle;">
+                                <td>{{ $request->page? (request()->page - 1) * 2 + $loop->iteration : $loop->iteration }}</td>
+                                <td>                               
+                                    {{ $product->user?->name }}
+                                </td>
+                                <td>{{ $product['title'] }}</td>
+                                <td>  
+                                    @foreach ($product->categories as $category)
+                                        <span class="badge bg-success">{{ $category->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td>{{ $product['price'] }}</td>
+                                <td>{{ $product['updated_at'] }}</td>
+                                <td>       
+                                    <div class="d-flex">
+                                        <form class="deleteForm{{$product->id}}" style="margin-right: 10px;" action="{{ route('admin.product.destroy',$product->id) }}"  method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $product->id }}">
+                                                <a href="javascript:;" class="d-block del-product-btn text-decoration-none text-white ">
+                                                    <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
+                                                </a>
+                                            </button>
+                                        </form>
+                                        <div class="col2">
+                                        <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px;" href="{{ route('admin.product.show',$product->id) }}"><i class="fa-solid fa-circle-info" style="margin-right: 10px;"></i>Detail</a>
+                                        </div>
+                                    </div>                        
+                                </td>
+                            </tr>
+                        @empty
                             <tr>
                                 <td class="text-center" colspan="7">There is no record</td>
                             </tr>
-                        @else
-                            @foreach($products as $product)
-                            <tr style="vertical-align: middle;">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>                               
-                                {{ $product->user?->name }}
-                            </td>
-                            <td>{{ $product['title'] }}</td>
-                            <td>  
-                                @foreach ($product->categories as $category)
-                                    <span class="badge bg-success">{{ $category->name }}</span>
-                                @endforeach
-                            </td>
-                            <td>{{ $product['price'] }}</td>
-                            <td>{{ $product['updated_at'] }}</td>
-                            <td>       
-                                <div class="d-flex">
-                                    <form class="deleteForm{{$product->id}}" style="margin-right: 10px;" action="{{ route('admin.product.destroy',$product->id) }}"  method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger del-btn" style="width:100px" data-id="{{ $product->id }}">
-                                            <a href="javascript:;" class="d-block del-product-btn text-decoration-none text-white ">
-                                                <i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete
-                                            </a>
-                                        </button>
-                                    </form>
-                                    <div class="col2">
-                                    <a class="btn btn-secondary d-block text-decoration-none text-white" style="width:100px;" href="{{ route('admin.product.show',$product->id) }}"><i class="fa-solid fa-circle-info" style="margin-right: 10px;"></i>Detail</a>
-                                    </div>
-                                </div>                        
-                            </td>
-                            </tr>
-                            @endforeach
-                        @endif
+                        @endforelse
                       </tbody>
                     </table>
                     {{ $products->appends(request()->input())->links() }}

@@ -24,9 +24,8 @@ class CategoryController extends Controller
         }else{
             $categories = Category::orderBy('id','desc')->paginate(10);
         }
-        $i = ($request->input('page', 1) - 1) * 5;
 
-        return view('admin.category.index',compact('categories','i','request'));
+        return view('admin.category.index',compact('categories','request'));
     }
 
     /**
@@ -47,10 +46,9 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $category = new Category();
-
-        $category->name = $request['name'];
-        $category->save();
+        Category::create([
+            "name" => $request->name,
+        ]);
         Toastr::success('Category Create Successfully!','SUCCESS');
         
         return redirect()->route('admin.category.index');
@@ -63,10 +61,8 @@ class CategoryController extends Controller
      * @param int $id category id
      * @return View category edit page
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $category = Category::find($id);
-
         return view('admin.category.edit',compact('category'));
     }
 
@@ -77,12 +73,11 @@ class CategoryController extends Controller
      * @param int $id category id
      * @return View category index
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
-        $category = Category::find($id);
-
-        $category->name = $request['name'];
-        $category->update();
+        $category->update([
+            "name" => $request->name,
+        ]);
         Toastr::success('Category Update Successfully!','SUCCESS');
         
         return redirect()->route('admin.category.index');
@@ -94,10 +89,8 @@ class CategoryController extends Controller
      * @param  int  $id category id
      * @return View category index page 
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id);
-        
         if($category){
             $category->delete();
         }

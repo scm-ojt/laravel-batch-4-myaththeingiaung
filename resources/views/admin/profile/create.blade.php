@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-
+@section('title') Blog | User Create @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

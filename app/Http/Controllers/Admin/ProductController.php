@@ -25,7 +25,6 @@ class ProductController extends Controller
     {
         if($request->isMethod('get')){
             $search = $request->input('title');
-            // $i = ($request->input('page', 1) - 1) * 5;
             
             if($request->has('search')){
                 $products = Product::with('categories')->with('user')
@@ -60,10 +59,8 @@ class ProductController extends Controller
      * @param  int  $id product id
      * @return $product Product Object
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-        
         return view('admin.product.show',compact('product'));
     }
 
@@ -74,16 +71,14 @@ class ProductController extends Controller
      * @param  int  $id product id
      * @return View index product and sending email to user
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
-        $email = $product->user->email;
         if($product){
             $product->categories()->detach();
             $product->delete();
         }
 
-        Mail::to($email)->send(new ProductDeleteMail($product));
+        Mail::to($product->user->email)->send(new ProductDeleteMail($product));
         Toastr::success('Product Delete Successfully!','SUCCESS');
         
         return redirect()->route('admin.product.index');

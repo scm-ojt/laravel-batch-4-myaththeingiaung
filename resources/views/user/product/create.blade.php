@@ -1,5 +1,6 @@
 @extends('user.layouts.app')
 
+@section('title') Blog | Product Create @endsection
 @section('content')
 <div class="container" style="margin-top: 60px">
     <div class="row justify-content-center">
