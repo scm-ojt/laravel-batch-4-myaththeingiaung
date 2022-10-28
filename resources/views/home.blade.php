@@ -35,7 +35,7 @@
                         <p class="" style="font-weight: bolder">$ {{ $product->price }}</p>
                         
                         @if($product->images->isEmpty())                           
-                            <img src="{{ asset('img/car1.jfif') }}" class="mb-4 rounded" width="382px" height="300px"  alt="Product Image">
+                            <img src="{{ asset('img/car1.jfif') }}" class="mb-4 rounded" width="382px" height="250px"  alt="Product Image">
                         @else
                             @foreach ($product->images as $image)
                                 <img src="{{ asset('img/products/'.$image?->name) }}" class="mb-4 rounded"  width="382px" height="240px" alt="Product Image">

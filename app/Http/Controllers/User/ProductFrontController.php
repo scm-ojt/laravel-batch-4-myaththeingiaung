@@ -150,9 +150,11 @@ class ProductFrontController extends Controller
      */
     public function destroy(Product $product)
     {
-        unlink(public_path('img/products/').$product->images[0]->name);          
-        $product->images()->delete();                 
-
+        $image = Image::where('imagable_type','App/Models/Product')->where('imagable_id',$product->id)->count();
+        if($image > 0){
+            unlink(public_path('img/products/').$product->images[0]->name);          
+            $product->images()->delete();  
+        }
         $product->categories()->detach();
         $product->delete();
 
