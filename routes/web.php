@@ -33,8 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/create',[ProductFrontController::class, 'create'])->name('product.create');
     Route::post('/product/create',[ProductFrontController::class, 'store'])->name('product.store');        
     Route::get('/product/edit/{product}',[ProductFrontController::class, 'edit'])->name('product.edit');
-    Route::delete('/product/destroy/{product}',[ProductFrontController::class, 'destroy'])->name('product.destroy');
     Route::put('/product/update/{product}',[ProductFrontController::class, 'update'])->name('product.update');  
+    Route::delete('/product/destroy/{product}',[ProductFrontController::class, 'destroy'])->name('product.destroy');
 
     //profile
     Route::get('user/profile/{user}',[UserFrontController::class, 'userProduct'])->name('profile.index');
@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
 Route::group(['middleware' => 'admin.auth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
     Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
-    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
     // Category             
     Route::get('/category',[CategoryController::class, 'index'])->name('category.index');
@@ -67,7 +67,6 @@ Route::group(['middleware' => 'admin.auth', 'prefix' => 'admin', 'as' => 'admin.
     Route::get('/profile',[UserController::class, 'index'])->name('profile.index');
     Route::get('/profile/create',[UserController::class, 'create'])->name('profile.create');
     Route::post('/profile/create',[UserController::class, 'store'])->name('profile.store');
-    Route::get('/profile/show/{user}',[UserController::class, 'show'])->name('profile.show');
     Route::delete('/profile/destroy/{user}',[UserController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/edit/{user}',[UserController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update/{user}',[UserController::class, 'update'])->name('profile.update');

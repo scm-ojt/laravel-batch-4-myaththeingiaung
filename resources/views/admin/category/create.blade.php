@@ -1,12 +1,12 @@
 @extends('admin.layouts.adminlte')
-@section('title') Blog | Category Create @endsection
+@section('title') Blog | Create Category @endsection
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div><h4>Category Create</h4></div>
+                    <div><h4>Create Category</h4></div>
                     <a href="{{ route('admin.category.index') }}" class="btn btn-primary ml-auto d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 

@@ -1,6 +1,6 @@
 @extends('user.layouts.app')
 
-@section('title') Blog | Profile Edit @endsection
+@section('title') Blog | Edit Profile  @endsection
 @section('content')
 <div class="container" style="margin-top: 60px">
     <div class="row justify-content-center">
@@ -8,7 +8,7 @@
             <div class="card mt-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     {{ __('Edit Profile') }}
-                    <a href="{{ route('profile.show',$user->id) }}" class="btn btn-outline-primary ml-auto d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <a href="{{ route('profile.show',$user->id) }}" class="btn btn-light ml-auto d-block text-primary text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                 </div>
 
                 <div class="card-body">

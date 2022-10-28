@@ -74,17 +74,6 @@ class UserController extends Controller
     }
 
     /**
-     * To show user details information
-     *
-     * @param  int  $id user id
-     * @return View details page
-     */
-    public function show(User $user)
-    {
-        return view('admin.profile.show',compact('user'));
-    }
-
-    /**
      * To store old value in edit page
      * 
      * @param int $id product id

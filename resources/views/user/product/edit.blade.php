@@ -1,13 +1,13 @@
 @extends('user.layouts.app')
 
-@section('title') Blog | Product Edit @endsection
+@section('title') Blog | Edit Product @endsection
 @section('content')
 <div class="container" style="margin-top: 80px">
     <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <div><h4 class="mb-0">Product Edit</h4></div>
+                    <div><h4 class="mb-0"> Edit Product</h4></div>
                     <a href="{{ route('home') }}" class="btn btn-light d-block text-primary text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 

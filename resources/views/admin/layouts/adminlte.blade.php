@@ -109,7 +109,7 @@
               <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="nav-link">
                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                 <p>Logout</p>
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="" class="d-none">
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="post" class="d-none">
                   @csrf
               </form>
               </a>

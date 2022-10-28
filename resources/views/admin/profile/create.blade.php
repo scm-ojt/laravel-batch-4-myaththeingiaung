@@ -1,12 +1,12 @@
 @extends('admin.layouts.adminlte')
-@section('title') Blog | User Create @endsection
+@section('title') Blog | Create User  @endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>User Create</h4>
+                    <h4>Create User </h4>
                     <a href="{{ route('admin.profile.index') }}" class="btn btn-primary ml-auto d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                 </div>
 

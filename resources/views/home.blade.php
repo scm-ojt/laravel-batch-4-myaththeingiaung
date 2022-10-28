@@ -2,7 +2,7 @@
 
 @section('title') Blog | Home @endsection
 @section('content')
-<div class="container" style="margin-top: 80px">
+<div class="container" style="margin-top: 65px">
     @if($products->count() > 0)
         <div class="row mb-4">
             <div class="col-md-12">
@@ -38,7 +38,7 @@
                             <img src="{{ asset('img/car1.jfif') }}" class="mb-4 rounded" width="382px" height="300px"  alt="Product Image">
                         @else
                             @foreach ($product->images as $image)
-                                <img src="{{ asset('img/products/'.$image?->name) }}" class="mb-4 rounded"  width="382px" height="300px" alt="Product Image">
+                                <img src="{{ asset('img/products/'.$image?->name) }}" class="mb-4 rounded"  width="382px" height="240px" alt="Product Image">
                             @endforeach
                         @endif 
                         <p class="text-black-50 mb-4" style="height: 50px">{{ Str::words($product->description, 13) }}</p>

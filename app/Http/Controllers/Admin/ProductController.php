@@ -33,7 +33,7 @@ class ProductController extends Controller
                         $q->where('name', 'like', '%'.$search.'%');
                     }
                 })->orwhere('title','LIKE','%'.$search.'%')
-                ->paginate(5);
+                ->paginate(10);
                 
             }elseif($request->has('export')){
                 $products = Product::with('categories')->with('user')
@@ -46,7 +46,7 @@ class ProductController extends Controller
                 
                 return Excel::download(new ProductsExport($products) , 'product'.uniqid(time()).'.csv');
             }else{
-                $products = Product::orderBy('id','desc')->paginate(2);
+                $products = Product::orderBy('id','desc')->paginate(10);
             }
             
             return view('admin.product.index',compact('products','request'));

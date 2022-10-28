@@ -46,7 +46,7 @@
                       <tbody>
                         @forelse ($products as $product)
                             <tr style="vertical-align: middle;">
-                                <td>{{ $request->page? (request()->page - 1) * 2 + $loop->iteration : $loop->iteration }}</td>
+                                <td>{{ $request->page? (request()->page - 1) * 10 + $loop->iteration : $loop->iteration }}</td>
                                 <td>                               
                                     {{ $product->user?->name }}
                                 </td>
