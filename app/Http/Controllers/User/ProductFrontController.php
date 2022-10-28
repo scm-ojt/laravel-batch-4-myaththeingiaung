@@ -150,15 +150,13 @@ class ProductFrontController extends Controller
      */
     public function destroy(Product $product)
     {
-        $email = $product->user->email;
-        if($product->images()->exitsts()){
-            unlink(public_path('img/products/').$product->images[0]->name);          
-            $product->images()->delete();             
-        }
+        unlink(public_path('img/products/').$product->images[0]->name);          
+        $product->images()->delete();                 
+
         $product->categories()->detach();
         $product->delete();
 
-        Mail::to($email)->send(new ProductDeleteMail($product));
+        Mail::to($product->user->email)->send(new ProductDeleteMail($product));
         Toastr::success('Product Delete Successfully!','SUCCESS');
 
         return redirect()->route('home');

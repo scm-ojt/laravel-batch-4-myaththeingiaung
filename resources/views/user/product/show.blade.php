@@ -41,7 +41,7 @@
                         <p>{{ $product->description }}</p>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('home') }}" class="btn btn-primary text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
-                            @can('show-btn')
+                            @if(Auth::id() === $product->user_id)
                                 <div class="d-flex">
                                     <a href="{{ route('product.edit',$product->id) }}" class="btn btn-secondary"><i class="fa-solid fa-pen" style="margin-right: 10px"></i>Edit</a>
                                     <form class="" style="margin-left: 5px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
@@ -50,7 +50,7 @@
                                         <button class="btn btn-danger"><i class="fa-solid fa-trash" style="margin-right: 10px"></i>Delete</button>
                                     </form>
                                 </div>
-                            @endcan                                
+                            @endif                                
                         </div>
                     </div>
                   </div>

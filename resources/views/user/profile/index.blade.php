@@ -35,12 +35,14 @@
                             </div>
                             <div class="d-flex align-items-end">
                                 <a href="{{ route('product.show',$product->id) }}" style="margin-right: 5px;" class="btn btn-primary ml-auto"><i class="fa-solid fa-circle-info" style="margin-right:3px"></i>See More</a>
-                                <form class="" style="margin-right: 5px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-danger"><i class="fa-solid fa-trash"  style="margin-right:3px"></i>Delete</button>
-                                </form>
-                                <a href="{{ route('product.edit',$product->id) }}" class="btn btn-secondary"><i class="fa-solid fa-pen"  style="margin-right:3px"></i>Edit</a>                            
+                                @if($user[0]->id === Auth::id())
+                                    <form class="" style="margin-right: 5px;" action="{{ route('product.destroy',$product->id) }}"  method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-danger"><i class="fa-solid fa-trash"  style="margin-right:3px"></i>Delete</button>
+                                    </form>
+                                    <a href="{{ route('product.edit',$product->id) }}" class="btn btn-secondary"><i class="fa-solid fa-pen"  style="margin-right:3px"></i>Edit</a>                            
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-4 mt-2">

@@ -39,7 +39,7 @@ class UserFrontController extends Controller
     public function edit(User $user)
     {
         if($user->id != Auth::id()){
-            abort(404);
+            return redirect()->back();
         }
 
         return view('user.profile.edit',compact('user'));

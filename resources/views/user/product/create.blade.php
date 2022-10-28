@@ -8,7 +8,7 @@
             <div class="card mt-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <div><h4 class="mb-0">Product Create</h4></div>
-                    <a href="{{ route('home') }}" class="btn btn-outline-primary d-block text-white text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
+                    <a href="{{ route('home') }}" class="btn btn-light d-block text-primary text-decoration-none"><i class="fa-solid fa-arrow-left-long" style="margin-right:7px"></i>Back</a>
                   </div>
 
                 <div class="card-body">
