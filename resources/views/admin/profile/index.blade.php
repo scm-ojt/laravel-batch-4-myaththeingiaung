@@ -34,7 +34,11 @@
                           <tr class="user-row">
                             <td style="vertical-align: middle">{{ $request->page? (request()->page - 1) * 10 + $loop->iteration : $loop->iteration }}</td>
                             <td style="vertical-align: middle">{{ $user['name'] }}</td>
-                            <td><img width="100px" class="rounded border" height="100px" src="{{ '../img/users/'.$user->images[0]->name }}" alt="{{ $user->name }}"></td>
+                            @if($user->images->count() > 0)
+                              <td><img width="100px" class="rounded border" height="100px" src="{{ '../img/users/'.$user?->images[0]->name }}" alt="{{ $user->name }}"></td>
+                            @else
+                              <td><img src="{{ asset('img/user.png') }}" alt="User Photo" width="100px" height="100px"></td>
+                            @endif
                             <td style="vertical-align: middle">{{ $user['email'] }}</td>
                             <td style="vertical-align: middle">{{ $user['phone'] }}</td>
                             <td style="vertical-align: middle">{{ $user['address'] }}</td>

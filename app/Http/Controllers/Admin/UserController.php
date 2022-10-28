@@ -27,6 +27,7 @@ class UserController extends Controller
         }else{
             $users = User::orderBy('id','desc')->paginate(10);
         }
+        // $image = Image::where('imagable_type','App/Model/User')->where('imagable_id',$users->id)->count();
         
         return view('admin.profile.index',compact('users','request'));
     }
