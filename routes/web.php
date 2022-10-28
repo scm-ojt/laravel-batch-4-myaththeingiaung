@@ -2,13 +2,15 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\User\UserFrontController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\ProductFrontController;
-use App\Http\Controllers\User\UserFrontController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,7 @@ use App\Http\Controllers\User\UserFrontController;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 Route::get('/product/show/{product}',[ProductFrontController::class, 'show'])->name('product.show');
@@ -71,5 +73,3 @@ Route::group(['middleware' => 'admin.auth', 'prefix' => 'admin', 'as' => 'admin.
     Route::get('/profile/edit/{user}',[UserController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update/{user}',[UserController::class, 'update'])->name('profile.update');
 });
-
-auth()->loginUsingId(3);
