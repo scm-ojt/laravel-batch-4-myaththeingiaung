@@ -6,13 +6,13 @@ git clone https://github.com/scm-ojt/laravel-batch-4-myaththeingiaung.git
 
 ## Set-up
 
-npm install
-composer install
+- npm install
+- composer install
 
 ## Run
 
-npm run dev
-php artisan serve
+- npm run dev
+- php artisan serve
 
 ## Features
 
