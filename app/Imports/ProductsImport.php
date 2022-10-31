@@ -18,21 +18,43 @@ class ProductsImport implements ToCollection,WithHeadingRow
         {
             $user = User::where('name',$row['username'])->get();
 
-            $product = new Product();
-            $product->user_id = $user->pluck('id')['0'];
-            $product->title = $row['title'];
-            $product->price = $row['price'];
-            $product->description = $row['description'];
-            $product->save();
+            $product = Product::where('title',$row['title'])->first();
 
-           $myString = $row['category_name'];
-           $myArray = explode(',', $myString);
+            $count = Product::where('title',$row['title'])->count();
 
-           foreach($myArray as $value){
-                $category = Category::where('name',$value)->get();
-                $cat_id = $category->pluck('id');
-                $product->categories()->attach($cat_id);
-            }     
+            $data = Product::updateOrCreate(
+                [
+                    'title'=>$row['title']
+                ],
+                [
+                    'user_id' => $user->pluck('id')['0'],
+                    'title' => $row['title'],
+                    'price' => $row['price'],
+                    'description' => $row['description'],
+                ]
+            );
+            $cName = $row['category_name'];
+            $categories = explode(',', $cName);
+            if($count != null){
+                if($row['del'] == 'yes'){
+                    $product->categories()->detach();
+                    $product->delete();
+                }else{
+                    $product->categories()->detach();
+                    foreach($categories as $value){
+                        $category = Category::where('name',$value)->get();
+                        $cat_id = $category->pluck('id');
+                        $data->categories()->attach($cat_id);
+                    } 
+                }
+            }
+            else{
+                foreach($categories as $value){
+                        $category = Category::where('name',$value)->get();
+                        $cat_id = $category->pluck('id');
+                        $data->categories()->attach($cat_id);
+                } 
+            }  
       }
    }
 

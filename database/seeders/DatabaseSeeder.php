@@ -53,17 +53,17 @@ class DatabaseSeeder extends Seeder
         $category->save();
 
         // User
-        User::factory(6)->has(
-            Product::factory()->count(2)
-        )->create();
+        // User::factory(6)->has(
+        //     Product::factory()->count(2)
+        // )->create();
 
-        $categories = Category::all();
+        // $categories = Category::all();
 
-        //Populate the pivot table
-        Product::all()->each(function ($product) use ($categories) { 
-            $product->categories()->attach(
-                $categories->random(rand(1, 3))->pluck('id')->toArray()
-            ); 
-        });
-}
+        // //Populate the pivot table
+        // Product::all()->each(function ($product) use ($categories) { 
+        //     $product->categories()->attach(
+        //         $categories->random(rand(1, 3))->pluck('id')->toArray()
+        //     ); 
+        // });
+    }
 }
