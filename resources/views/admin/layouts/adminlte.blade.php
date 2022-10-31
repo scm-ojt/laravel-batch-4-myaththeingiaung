@@ -30,7 +30,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('home') }}" class="nav-link">Home</a>
+        <a href="{{ route('home') }}" class="nav-link">{{ __('nav.home') }}</a>
       </li>
     </ul>
 
@@ -81,34 +81,57 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+               <li class="nav-item menu-open">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa-solid fa-globe"></i>
+                  <p>
+                    Language
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('admin.dashboard',['my']) }}" class="nav-link {{ Request::is('admin/dashboard/my') ? 'active' : '' }}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Myanmar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('admin.dashboard',['en']) }}" class="nav-link {{ Request::is('admin/dashboard/en') ? 'active' : '' }}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>English</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
             <li class="nav-item">
-              <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+              <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard*') ? 'active' : '' }}">
                   <i class="nav-icon fa-solid fa-house"></i>
-                  <p>Dashboard</p>
+                  <p>{{ __('nav.dashboard') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.category.index') }}" class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
                 <i class="nav-icon fa-solid fa-tags"></i>
-                <p>Category</p>
+                <p>{{ __('nav.category') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.product.index') }}" class="nav-link {{ Request::is('admin/product*') ? 'active' : '' }}">
                 <i class="nav-icon fa-solid fa-box-open"></i>
-                <p>Product</p>
+                <p>{{ __('nav.product') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.profile.index') }}" class="nav-link {{ Request::is('admin/profile*') ? 'active' : '' }}">
                 <i class="nav-icon fa-solid fa-user-plus"></i>
-                <p>User</p>
+                <p>{{ __('nav.user') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="nav-link">
                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
-                <p>Logout</p>
+                <p>{{ __('nav.logout') }}</p>
                 <form id="logout-form" action="{{ route('admin.logout') }}" method="post" class="d-none">
                   @csrf
               </form>

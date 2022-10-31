@@ -8,7 +8,7 @@ git clone https://github.com/scm-ojt/laravel-batch-4-myaththeingiaung.git
 
 - copy env.example .env
 - env setup
-- create database and import sql file 
+- create database 
 - npm install
 - composer install
 

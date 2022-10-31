@@ -25,7 +25,7 @@ use App\Http\Controllers\User\ProductFrontController;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/{lang?}', [HomeController::class, 'index'])->name('home');
 Route::get('/admin/login',[AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 Route::post('/admin/login',[AdminController::class, 'login'])->name('admin.login');
 Route::get('/product/show/{product}',[ProductFrontController::class, 'show'])->name('product.show');
@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['middleware' => 'admin.auth', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
-    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+    Route::get('/dashboard/{lang?}', [DashboardController::class,'index'])->name('dashboard');
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
     // Category             

@@ -17,12 +17,12 @@ class ProductsImport implements ToCollection,WithHeadingRow
         foreach ($rows as $row)
         {
             $user = User::where('name',$row['username'])->get();
-            $product = Product::where('title',$row['title'])->first();
-            $count = Product::where('title',$row['title'])->count();
+            $product = Product::where('id',$row['id'])->first();
+            $count = Product::where('id',$row['id'])->count();
 
             $data = Product::updateOrCreate(
                 [
-                    'title'=>$row['title']
+                    'id'=>$row['id']
                 ],
                 [
                     'user_id' => $user->pluck('id')['0'],

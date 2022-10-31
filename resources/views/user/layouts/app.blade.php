@@ -38,7 +38,7 @@
     <div id="app">
         <nav class="navbar position-fixed w-100 top-0 navbar-expand-md navbar-dark bg-primary shadow-sm" style="z-index: 5">
             <div class="container">
-                <a class="h1 navbar-brand" style="font-size:25px;font-weight:bolder;" href="{{ url('/') }}">
+                <a class="h1 navbar-brand" style="font-size:25px;font-weight:bolder;" href="{{ route('home',['en']) }}">
                     Blog
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -55,28 +55,37 @@
                         <!-- Authentication Links -->
                         @guest  
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                                <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }} {{ Request::is('en') ? 'active' : '' }} {{ Request::is('my') ? 'active' : '' }}">{{ __('nav.home') }}</a>
                             </li>                         
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">{{ __('nav.login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link {{ Request::is('register') ? 'active' : '' }}" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link {{ Request::is('register') ? 'active' : '' }}" href="{{ route('register') }}">{{ __('nav.register') }}</a>
                                 </li>
                             @endif
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle"  href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('nav.language') }}
+                                </a>
+                                <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('home','en') }}" class="dropdown-item {{ Request::is('en') ? 'active' : '' }}">English</a>
+                                    <a href="{{ route('home','my') }}" class="dropdown-item {{ Request::is('my') ? 'active' : '' }}">Myanmar</a>
+                                </div> 
+                            </li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Home</a>
+                                <a href="{{ route('home') }}" class="nav-link  {{ Request::is('/') ? 'active' : '' }} {{ Request::is('en') ? 'active' : '' }} {{ Request::is('my') ? 'active' : '' }}">{{ __('nav.home') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product/create') ? 'active' : '' }}">Product Create</a>
+                                <a href="{{ route('product.create') }}" class="nav-link {{ Request::is('product/create') ? 'active' : '' }}">{{ __('nav.product-create') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('profile.index',Auth::id()) }}" class="nav-link {{ Request::is('user/profile*') ? 'active' : '' }}">User Profile</a>
+                                <a href="{{ route('profile.index',Auth::id()) }}" class="nav-link {{ Request::is('user/profile*') ? 'active' : '' }}">{{ __('nav.user-profile') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle {{ Request::is('profile*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -88,17 +97,26 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    <a href="{{ route('profile.show', Auth::id()) }}" class="dropdown-item {{ Request::is('profile/show*') ? 'active' : '' }}">profile</a>
+                                    <a href="{{ route('profile.show', Auth::id()) }}" class="dropdown-item {{ Request::is('profile/show*') ? 'active' : '' }}">{{ __('nav.profile') }}</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('nav.logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>    
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle"  href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Language
+                                </a>
+                                <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('home','en') }}" class="dropdown-item {{ Request::is('en') ? 'active' : '' }} ">English</a>
+                                    <a href="{{ route('home','my') }}" class="dropdown-item {{ Request::is('my') ? 'active' : '' }}">Myanmar</a>
+                                </div> 
                             </li>
                         @endguest
                     </ul>
