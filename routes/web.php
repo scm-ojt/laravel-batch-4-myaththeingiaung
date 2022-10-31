@@ -74,4 +74,4 @@ Route::group(['middleware' => 'admin.auth', 'prefix' => 'admin', 'as' => 'admin.
     Route::put('/profile/update/{user}',[UserController::class, 'update'])->name('profile.update');
 });
 
-auth()->loginUsingId(3);
+// auth()->loginUsingId(3);

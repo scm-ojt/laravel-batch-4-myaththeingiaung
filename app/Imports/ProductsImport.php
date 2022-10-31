@@ -17,9 +17,7 @@ class ProductsImport implements ToCollection,WithHeadingRow
         foreach ($rows as $row)
         {
             $user = User::where('name',$row['username'])->get();
-
             $product = Product::where('title',$row['title'])->first();
-
             $count = Product::where('title',$row['title'])->count();
 
             $data = Product::updateOrCreate(
